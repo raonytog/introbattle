@@ -1,25 +1,20 @@
 import pygame
-import window
 
 pygame.init()
 
 clock = pygame.time.Clock()
-executando = True
+endCondition = False
 
-janela = pygame.display.set_mode((1024, 768))
+# janela do jogo
+janela = pygame.display.set_mode((1024, 720))
 pygame.display.set_caption("Introbattle")
-cor = (0, 100, 255)
 
-while executando:
+while not endCondition:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
-            executando = False
+            endCondition = True
 
-    # Atualizar a exibição
-    pygame.display.flip()
-
-    # Definir a taxa de quadros
-    clock.tick(60)
-    janela.fill(cor)
+    pygame.display.flip()  # Atualizar a exibição
+    clock.tick(60)  # Definir a taxa de quadros
 
 pygame.quit()

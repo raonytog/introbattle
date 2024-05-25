@@ -1,29 +1,32 @@
 class Characters:
-    __pv = 0
-    __atk = 0
-    __def = 0
-    __spd = 0
+    """
+    Propriedades:
+        __pv = pontos de vida atual
+        __atk = ataque
+        __def = defesa
+        __spd = velocidade
+    """
 
     def __init__(self, vida, ataque, defesa, speed):
-        self.__pv = vida
+        self.__lp = vida
         self.__atk = ataque
         self.__def = defesa
         self.__spd = speed
 
-    def retorna_vida(self):
-        return self.__pv
+    def get_pv(self):
+        return self.__lp
 
-    def retorna_ataque(self):
+    def get_atk(self):
         return self.__atk
 
-    def retorna_defesa(self):
+    def get_def(self):
         return self.__def
 
-    def retorna_velocidade(self):
+    def get_spd(self):
         return self.__spd
 
-    def ataca(self, defesa_inimiga):
+    def attack_turn(self, defesa_inimiga):
         return self.__atk * (50/(50 + defesa_inimiga))
 
-    def defende(self):
+    def defense_turn(self):
         return self.__def * 2
