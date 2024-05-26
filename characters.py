@@ -1,32 +1,80 @@
-class Characters:
+import pygame
+
+max_size_sprite = (150, 150)
+
+largura = 1024
+altura = 728
+
+
+class Personagem(pygame.sprite.Sprite):
     """
     Propriedades:
-        __pv = pontos de vida atual
-        __atk = ataque
-        __def = defesa
-        __spd = velocidade
+        rect = area do sprite
+        img = sprite do personagem
+        pos_x = posicao x
+        pos_y = posicao y
     """
 
-    def __init__(self, vida, ataque, defesa, speed):
-        self.__lp = vida
-        self.__atk = ataque
-        self.__def = defesa
-        self.__spd = speed
+    def __init__(self, nome, escolha):
+        super().__init__()
+        self.imagem = pygame.image.load(f"./imgs/{nome}.png")
+        self.imagem = pygame.transform.scale(self.imagem, max_size_sprite)
+        self.rect = self.imagem.get_rect()
 
-    def get_pv(self):
-        return self.__lp
+        self.pos_x = 200
+        if escolha == 1:
+            self.pox_y = 150
 
-    def get_atk(self):
-        return self.__atk
+        elif escolha == 2:
+            self.pos_x = 350
+            self.pox_y = 300
 
-    def get_def(self):
-        return self.__def
+        else:
+            self.pox_y = 450
 
-    def get_spd(self):
-        return self.__spd
+        self.rect.x = self.pos_x
+        self.rect.y = self.pox_y
 
-    def attack_turn(self, defesa_inimiga):
-        return self.__atk * (50/(50 + defesa_inimiga))
+    def desenha_personagem(self, game_window):
+        game_window.blit(self.imagem, self.rect)
 
-    def defense_turn(self):
-        return self.__def * 2
+
+class Vilao1(Personagem):
+    """
+    Propriedades:
+        hp
+        atk
+        def
+        spd
+    """
+
+    def __init__(self, nome):
+        super().__init__(nome, 1)
+        self.__lp = 200
+        self.__atk = 30
+        self.__def = 10
+        self.__spd = 30
+
+        self.rect.x = self.pos_x = 800
+        self.rect.y = self.pox_y = 300
+
+
+class Vilao2(Personagem):
+    """
+        Propriedades:
+            hp
+            atk
+            def
+            spd
+        """
+
+    def __init__(self, nome):
+        super().__init__(nome, 1)
+        self.__lp = 100
+        self.__atk = 10
+        self.__def = 5
+        self.__spd = 50
+
+        self.rect.x = self.pos_x = 730
+        self.rect.y = self.pox_y = 450
+
