@@ -3,18 +3,20 @@ import characters
 
 pygame.init()
 
-clock = pygame.time.Clock() # tempo de acao do jogo
-endCondition = False
+# tempo de acao do jogo
+clock = pygame.time.Clock()
 
+# criacao dos personagens
 tomate = characters.Vilao1("Tomate")
 abobora = characters.Vilao2("Abobora")
 
 # janela do jogo
 janela = pygame.display.set_mode((1024, 728))
 bg_img = pygame.image.load("./imgs/Background.png")
-
 pygame.display.set_caption("Introbattle")
 
+# game loop
+endCondition = False
 while not endCondition:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
