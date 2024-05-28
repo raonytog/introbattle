@@ -34,15 +34,11 @@ character_list.append(p4)
 character_list.append(p5)
 
 
-
-
 def main():
     end = False
     while not end:  # game loop
-        for evento in pygame.event.get():
-
-            # se fechou a janela
-            if evento.type == pygame.QUIT:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 end = True
 
         # desenha a janela com o fundo
