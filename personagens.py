@@ -3,7 +3,7 @@ import pygame
 WIDTH, HEIGHT = 1024, 728
 
 hero_positions = [(100, 500), (250, 500), (400, 500)]
-vilain_positions = [(1000, 500), (800, 500)]
+vilain_positions = [(700, 500), (800, 500)]
 
 
 class Personagem(pygame.sprite.Sprite):
@@ -31,15 +31,15 @@ class Personagem(pygame.sprite.Sprite):
         self.img = pygame.image.load(f"./imgs/{name}.png")
         self.rect = self.img.get_rect()
 
-        if is_hero:
+        if is_hero is True:
             self.position = hero_positions[nesm_chooise-1]
 
         else:
             self.position = vilain_positions[nesm_chooise-1]
 
-            self.rect.x = self.position[0]
-            self.rect.y = self.position[1]
+        self.rect.x = self.position[0]
+        self.rect.y = self.position[1]
 
     def draw_character(self, screen):
         screen.blit(self.img, self.rect)
-        
+

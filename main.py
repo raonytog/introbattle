@@ -21,9 +21,19 @@ BACKGROUND = pygame.transform.scale(BACKGROUND, SIZE)
 pygame.display.set_caption("Introbattle")
 
 # personagens
+character_list = list()
 p1 = personagens.Personagem("Maga", 100, 30, 20, 45, 1, True)
 p2 = personagens.Personagem("Maga", 100, 30, 20, 45, 2, True)
 p3 = personagens.Personagem("Maga", 100, 30, 20, 45, 3, True)
+p4 = personagens.Personagem("Maga", 100, 30, 20, 45, 1, False)
+p5 = personagens.Personagem("Maga", 100, 30, 20, 45, 2, False)
+character_list.append(p1)
+character_list.append(p2)
+character_list.append(p3)
+character_list.append(p4)
+character_list.append(p5)
+
+
 
 
 def main():
@@ -39,9 +49,8 @@ def main():
         SCREEN.blit(BACKGROUND, START)
 
         # gera personagens
-        p1.draw_character(SCREEN)
-        p2.draw_character(SCREEN)
-        p3.draw_character(SCREEN)
+        for character in character_list:
+            character.draw_character(SCREEN)
 
         clock.tick(FPS)  # Definir a taxa de quadros
         pygame.display.flip()  # Atualizar a exibição
