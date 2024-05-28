@@ -1,4 +1,5 @@
 import pygame
+import os
 
 WIDTH, HEIGHT = 1024, 728
 
@@ -27,8 +28,9 @@ class Personagem(pygame.sprite.Sprite):
         self.defense = defense
         self.speed = speed
         self.attack = attack
+        self.name = name
 
-        self.img = pygame.image.load(f"./imgs/{name}.png")
+        self.img = pygame.image.load('imgs', f"{self.name}.png")
         self.rect = self.img.get_rect()
 
         if is_hero is True:
