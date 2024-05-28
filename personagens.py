@@ -1,163 +1,45 @@
 import pygame
 
-max_size_sprite = (200, 200)
-largura = 1024
-altura = 728
+WIDTH, HEIGHT = 1024, 728
+
+hero_positions = [(100, 500), (250, 500), (400, 500)]
+vilain_positions = [(1000, 500), (800, 500)]
 
 
 class Personagem(pygame.sprite.Sprite):
     """
-    Propriedades:
-        rect = area do sprite
-        img = sprite do personagem
-        pos_x = posicao x
-        pos_y = posicao y
+        // stats
+        life_points: pontos de vida
+        defense: pontos de defesa
+        speed: pontos de velocidade
+        attack: pontos de ataque
+
+        // self
+        name: character name
+        rect: retangulo de atuacao do personagem
+        img: sprite do personagem
+        pos: posicao na tela (x, y)
     """
 
-    def __init__(self, nome, escolha):
+    def __init__(self, name, life_points, defense, speed, attack, nesm_chooise, is_hero):
         super().__init__()
-        self.imagem = pygame.image.load(f"./imgs/{nome}.png")
-        self.imagem = pygame.transform.scale(self.imagem, max_size_sprite)
-        self.rect = self.imagem.get_rect()
+        self.life_points = life_points
+        self.defense = defense
+        self.speed = speed
+        self.attack = attack
 
-        self.pos_x = 200
-        if escolha == 1:
-            self.pox_y = 150
+        self.img = pygame.image.load(f"./imgs/{name}.png")
+        self.rect = self.img.get_rect()
 
-        elif escolha == 2:
-            self.pos_x = 350
-            self.pox_y = 300
+        if is_hero:
+            self.position = hero_positions[nesm_chooise-1]
 
         else:
-            self.pox_y = 450
+            self.position = vilain_positions[nesm_chooise-1]
 
-        self.rect.x = self.pos_x
-        self.rect.y = self.pox_y
+            self.rect.x = self.position[0]
+            self.rect.y = self.position[1]
 
-    def desenha_personagem(self, game_window):
-        game_window.blit(self.imagem, self.rect)
-
-
-class Vilao1(Personagem):
-    """
-    Propriedades:
-        hp
-        atk
-        def
-        spd
-    """
-
-    def __init__(self, nome):
-        super().__init__(nome, 1)
-        self.__lp = 200
-        self.__atk = 30
-        self.__def = 10
-        self.__spd = 35
-
-        self.rect.x = self.pos_x = 800
-        self.rect.y = self.pox_y = 300
-
-
-class Vilao2(Personagem):
-    """
-        Propriedades:
-            hp
-            atk
-            def
-            spd
-        """
-
-    def __init__(self, nome):
-        super().__init__(nome, 1)
-        self.__lp = 100
-        self.__atk = 10
-        self.__def = 5
-        self.__spd = 40
-
-        self.rect.x = self.pos_x = 730
-        self.rect.y = self.pox_y = 450
-
-
-class Tanker(Personagem):
-    """
-        Propriedades:
-            hp
-            atk
-            def
-            spd
-        """
-
-    def __init__(self, nome, escolha):
-        super().__init__(nome, escolha)
-        self.__lp = 120
-        self.__atk = 10
-        self.__def = 35
-        self.__spd = 12
-
-
-class Ranger(Personagem):
-    """
-        Propriedades:
-            hp
-            atk
-            def
-            spd
-        """
-
-    def __init__(self, nome, escolha):
-        super().__init__(nome, escolha)
-        self.__lp = 80
-        self.__atk = 35
-        self.__def = 12
-        self.__spd = 50
-
-
-class Meele(Personagem):
-    """
-        Propriedades:
-            hp
-            atk
-            def
-            spd
-        """
-
-    def __init__(self, nome, escolha):
-        super().__init__(nome, escolha)
-        self.__lp = 100
-        self.__atk = 45
-        self.__def = 20
-        self.__spd = 35
-
-
-class Sumonner(Personagem):
-    """
-        Propriedades:
-            hp
-            atk
-            def
-            spd
-        """
-
-    def __init__(self, nome, escolha):
-        super().__init__(nome, escolha)
-        self.__lp = 80
-        self.__atk = 40
-        self.__def = 20
-        self.__spd = 15
-
-
-class Mage(Personagem):
-    """
-        Propriedades:
-            hp
-            atk
-            def
-            spd
-        """
-
-    def __init__(self, nome, escolha):
-        super().__init__(nome, escolha)
-        self.__lp = 70
-        self.__atk = 50
-        self.__def = 10
-        self.__spd = 35
+    def draw_character(self, screen):
+        screen.blit(self.img, self.rect)
+        
