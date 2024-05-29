@@ -2,12 +2,13 @@ import pygame
 import os
 
 WIDTH, HEIGHT = 1024, 728
+HERO_SIZE = (70, 100)
 
 hero_positions = [(100, 500), (250, 500), (400, 500)]
 vilain_positions = [(700, 500), (800, 500)]
 
 
-class Personagem(pygame.sprite.Sprite):
+class Character(pygame.sprite.Sprite):
     """
         // stats
         life_points: pontos de vida
@@ -22,25 +23,17 @@ class Personagem(pygame.sprite.Sprite):
         pos: posicao na tela (x, y)
     """
 
-    def __init__(self, name, life_points, defense, speed, attack, nesm_chooise, is_hero):
+    def __init__(self, life_poins, defense, speed, attack, name):
         super().__init__()
-        self.life_points = life_points
+        self.life_points = life_poins
         self.defense = defense
         self.speed = speed
         self.attack = attack
+        
         self.name = name
-
-        self.img = pygame.image.load(os.path.join('imgs', f"{self.name}.png"))
+        self.img = pygame.image.load(os.path.join('imgs', f'{name}.png'))
+        self.img = pygame.transform.scale(self.img, HERO_SIZE)
         self.rect = self.img.get_rect()
-
-        if is_hero is True:
-            self.position = hero_positions[nesm_chooise-1]
-
-        else:
-            self.position = vilain_positions[nesm_chooise-1]
-
-        self.rect.x = self.position[0]
-        self.rect.y = self.position[1]
 
     def draw_character(self, screen):
         screen.blit(self.img, self.rect)
@@ -62,4 +55,38 @@ class Personagem(pygame.sprite.Sprite):
     
     def get_caracter_rect(self):
         return self.rect
+    
+class Meele(Character):
+    def __init__(self):
+        super().__init__(120, 40, 30, 30, 'meele')
+
+
+class Mage(Character):
+    def __init__(self):
+        super().__init__(100, 20, 50, 50, 'mage') 
+
+
+class Ranged(Character):
+    def __init__(self):
+        super().__init__(80, 10, 100, 100, 'ranged')
+        
+        
+class Summoner(Character):
+    def __init__(self):
+        super().__init__(80, 5, 50, 150, 'summoner')
+        
+
+class Tanker(Character):
+    def __init__(self):
+        super().__init__(100, 70, 5, 5, 'tanker')
+        
+
+class EyeOfCtchulu(Character):
+    def __init__(self):
+        super().__init__(400, 40, 70, 40, 'eye_of_ctchulu')
+        
+
+class DukeFisheron(Character):
+    def __init__(self):
+        super().__init__(170, 10, 150, 100, 'duke_fishron')
 
