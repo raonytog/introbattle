@@ -17,7 +17,7 @@ START = (0, 0)
 SIZE = (WIDTH, HEIGHT)
 SCREEN = pygame.display.set_mode(SIZE)
 
-# definindo o background do jogo e ajustando seu tamanho
+# definindo o imagens do jogo e ajustando seu tamanho
 BACKGROUND = pygame.image.load(os.path.join('imgs', "fundo.png"))
 BACKGROUND = pygame.transform.scale(BACKGROUND, SIZE)
 
@@ -74,5 +74,8 @@ def draw_screen(SCREEN, CHARACTER_LIST, ENEMIES_LIST):
         y -= 180
         
 def update_screen():
+    """_summary_
+        Atualiza a taxa de quadros para 60 e atualiza a exibicao da tela
+    """
     clock.tick(FPS)  # Definir a taxa de quadros
     pygame.display.flip()  # Atualizar a exibição
