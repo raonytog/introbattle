@@ -4,10 +4,6 @@ import os
 WIDTH, HEIGHT = 1024, 728
 HERO_SIZE = (70, 100)
 
-hero_positions = [(100, 500), (250, 500), (400, 500)]
-vilain_positions = [(700, 500), (800, 500)]
-
-
 class Character(pygame.sprite.Sprite):
     """
         // stats
@@ -32,11 +28,23 @@ class Character(pygame.sprite.Sprite):
         
         self.name = name
         self.img = pygame.image.load(os.path.join('imgs', f'{name}.png'))
-        self.img = pygame.transform.scale(self.img, HERO_SIZE)
+        
+        if name == 'duke_fishron' or name == 'eye_of_ctchulu':
+            if name == 'eye_of_ctchulu':
+                self.img = pygame.transform.flip(self.img, False, True)
+                self.img = pygame.transform.rotate(self.img, -135)
+            
+        else:
+            self.img = pygame.transform.scale(self.img, HERO_SIZE)
+            
+        self.img = pygame.transform.flip(self.img, True, False)
         self.rect = self.img.get_rect()
 
     def draw_character(self, screen):
         screen.blit(self.img, self.rect)
+        
+    def draw_character_position(self, screen, position):
+        screen.blit(self.img, position)
 
     def get_character_life_points(self):
         return self.life_points
@@ -76,9 +84,9 @@ class Summoner(Character):
         super().__init__(80, 5, 50, 150, 'summoner')
         
 
-class Tanker(Character):
+class Bard(Character):
     def __init__(self):
-        super().__init__(100, 70, 5, 5, 'tanker')
+        super().__init__(80, 40, 50, 45, 'bard')
         
 
 class EyeOfCtchulu(Character):
