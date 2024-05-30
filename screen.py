@@ -22,7 +22,6 @@ BACKGROUND = pygame.image.load(os.path.join('imgs', "fundo.png"))
 BACKGROUND = pygame.transform.scale(BACKGROUND, SIZE)
 
 START_BACKGROUND = pygame.image.load(os.path.join('imgs', 'start_screen.png'))
-START_BACKGROUND = pygame.transform.scale(START_BACKGROUND, SIZE)
 
 INTROBATTLE = pygame.image.load(os.path.join('imgs', 'introbattle.png'))
 INTROBATTLE = pygame.transform.scale(INTROBATTLE, (400, 100))
