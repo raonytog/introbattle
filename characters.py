@@ -64,37 +64,83 @@ class Character(pygame.sprite.Sprite):
     def get_caracter_rect(self):
         return self.rect
     
+    def receive_dmg(self, damage):
+        self.life_points -= damage * (50/(50 + self.defense))
+    
 class Meele(Character):
     def __init__(self):
         super().__init__(120, 40, 30, 30, 'meele')
+        
+    #def attack(self):
+        
+    #def defense(self):
+        
+    #def special(self):
+
 
 
 class Mage(Character):
     def __init__(self):
         super().__init__(100, 20, 50, 50, 'mage') 
+        
+    #def attack(self):
+        
+    #def defense(self):
+        
+    #def special(self):
 
 
 class Ranged(Character):
     def __init__(self):
         super().__init__(80, 10, 100, 100, 'ranged')
         
+    #def attack(self):
+        
+    #def defense(self):
+        
+    #def special(self):
+        
         
 class Summoner(Character):
     def __init__(self):
         super().__init__(80, 5, 50, 150, 'summoner')
+        
+    #def attack(self):
+        
+    #def defense(self):
+        
+    #def special(self):
         
 
 class Bard(Character):
     def __init__(self):
         super().__init__(80, 40, 50, 45, 'bard')
         
+    #def attack(self):
+        
+    #def defense(self):
+        
+    #def special(self):
+        
 
 class EyeOfCtchulu(Character):
     def __init__(self):
         super().__init__(400, 40, 70, 40, 'eye_of_ctchulu')
         
+    #def attack(self):
+        
+    #def defense(self):
+        
+    #def special(self):
+        
 
 class DukeFisheron(Character):
     def __init__(self):
         super().__init__(170, 10, 150, 100, 'duke_fishron')
+        
+    #def attack(self):
+        
+    #def defense(self):
+        
+    #def special(self):
 

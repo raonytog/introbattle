@@ -1,0 +1,4 @@
+import characters
+
+class Combatsys():
+    
