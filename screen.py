@@ -1,12 +1,13 @@
 import pygame
+import characters
 import os
 
-FPS = 60
 
 pygame.init()
 
 # tempo de ação do jogo
 clock = pygame.time.Clock()
+FPS = 60
 
 # titulo do jogo
 pygame.display.set_caption("Introbattle: Terraria project")
@@ -41,7 +42,7 @@ MENU = pygame.image.load(os.path.join('imgs', 'menu.png'))
 MENU_RECT = MENU.get_rect()
 
 
-def draw_start_screen(screen):
+def draw_start_screen(screen: pygame.surface):
     """_summary_
         Desenha a tela inicial, com a logo do logo e a ordem de click para comecar
         a selecao de personagem
@@ -70,7 +71,7 @@ def draw_start_screen(screen):
             
 
 
-def draw_character_selection(screen, character_list):
+def draw_character_selection(screen: pygame.surface, character_list: pygame.sprite.Group):
     """Desenha a tela de seleção de personagens e permite ao jogador selecionar até 3 personagens.
 
     Args:
@@ -168,7 +169,8 @@ def draw_character_selection(screen, character_list):
     return selected_characters
 
 
-def draw_screen(screen, character_list, enemies_list):
+def draw_screen(screen: pygame.surface, character_list: pygame.sprite.Group, 
+                enemies_list: pygame.sprite.Group) -> None:
     """_summary_
         Desenha a tela principal do jogo, contendo:
         1- Herois selecionados
@@ -177,8 +179,8 @@ def draw_screen(screen, character_list, enemies_list):
 
     Args:
         screen (Surface): tela redimensionada
-        character_list (List): lista de personagens
-        enemies_list (List): lista dos inimigos
+        character_list (Group): lista de personagens
+        enemies_list (Group): lista dos inimigos
     """
     
     screen.blit(BACKGROUND, START)
@@ -195,11 +197,11 @@ def draw_screen(screen, character_list, enemies_list):
         y -= 180
 
 
-def draw_menu(screen, character_list):
+def draw_menu(screen: pygame.surface, character_list: list[characters.Character]) -> None:
     screen.blit(MENU, MENU_RECT)
 
 
-def update_screen():
+def update_screen() -> None:
     """_summary_
         Atualiza a taxa de quadros para 60 e atualiza a exibicao da tela
     """

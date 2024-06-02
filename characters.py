@@ -19,7 +19,7 @@ class Character(pygame.sprite.Sprite):
         pos: posicao na tela (x, y)
     """
 
-    def __init__(self, life_poins, defense, speed, attack, name):
+    def __init__(self, life_poins: int, defense: int, speed: int, attack: int, name: str):
         super().__init__()
         self.life_points = life_poins
         self.defense = defense
@@ -40,31 +40,31 @@ class Character(pygame.sprite.Sprite):
         self.img = pygame.transform.flip(self.img, True, False)
         self.rect = self.img.get_rect()
 
-    def draw_character(self, screen):
+    def draw_character(self, screen: pygame.surface):
         screen.blit(self.img, self.rect)
         
-    def draw_character_position(self, screen, position):
+    def draw_character_position(self, screen: pygame.surface, position: list):
         screen.blit(self.img, position)
 
-    def get_character_life_points(self):
+    def get_character_life_points(self) -> int:
         return self.life_points
     
-    def get_character_defense(self):
+    def get_character_defense(self) -> int:
         return self.defense
     
-    def get_character_speed(self):
+    def get_character_speed(self) -> int:
         return self.speed
     
-    def get_character_attack(self):
+    def get_character_attack(self) -> int:
         return self.attack
     
-    def get_character_name(self):
+    def get_character_name(self) -> str:
         return self.name
     
-    def get_caracter_rect(self):
+    def get_caracter_rect(self) -> pygame.rect:
         return self.rect
     
-    def receive_dmg(self, damage):
+    def receive_dmg(self, damage: int) -> int:
         self.life_points -= damage * (50/(50 + self.defense))
     
 class Meele(Character):
