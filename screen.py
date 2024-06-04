@@ -22,6 +22,9 @@ SCREEN = pygame.display.set_mode(SIZE)
 BACKGROUND = pygame.image.load(os.path.join('imgs', "fundo.png"))
 BACKGROUND = pygame.transform.scale(BACKGROUND, SIZE)
 
+BACKGROUND_INGAME = pygame.image.load(os.path.join('imgs', 'corruption_desert.png'))
+BACKGROUND_INGAME = pygame.transform.scale(BACKGROUND_INGAME, SIZE)
+
 START_BACKGROUND = pygame.image.load(os.path.join('imgs', 'start_screen.png'))
 
 INTROBATTLE = pygame.image.load(os.path.join('imgs', 'introbattle.png'))
@@ -183,7 +186,7 @@ def draw_screen(screen: pygame.surface, character_list: pygame.sprite.Group,
         enemies_list (Group): lista dos inimigos
     """
     
-    screen.blit(BACKGROUND, START)
+    screen.blit(BACKGROUND_INGAME, (START))
 
     x = 100
     for character in character_list:
