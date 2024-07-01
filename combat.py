@@ -1,4 +1,4 @@
 import characters
 
-class Combatsys():
-    
+class CombatSys():
+    # to do

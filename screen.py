@@ -1,6 +1,6 @@
-import pygame
-import characters
-import os
+from pygame import *
+from characters import *
+import time
 
 
 pygame.init()
@@ -15,6 +15,7 @@ pygame.display.set_caption("Introbattle: Terraria project")
 # tamanhos da janela do jogo
 WIDTH, HEIGHT = 1024, 728
 START = (0, 0)
+MID = (WIDTH/2, HEIGHT/2)
 SIZE = (WIDTH, HEIGHT)
 SCREEN = pygame.display.set_mode(SIZE)
 
@@ -22,7 +23,7 @@ SCREEN = pygame.display.set_mode(SIZE)
 BACKGROUND = pygame.image.load(os.path.join('imgs', "fundo.png"))
 BACKGROUND = pygame.transform.scale(BACKGROUND, SIZE)
 
-BACKGROUND_INGAME = pygame.image.load(os.path.join('imgs', 'corruption_desert.png'))
+BACKGROUND_INGAME = pygame.image.load(os.path.join('imgs', 'corruption_desert_day.png'))
 BACKGROUND_INGAME = pygame.transform.scale(BACKGROUND_INGAME, SIZE)
 
 START_BACKGROUND = pygame.image.load(os.path.join('imgs', 'start_screen.png'))
@@ -36,25 +37,18 @@ SELECTION_BANNER = pygame.image.load(os.path.join('imgs', 'red_banner.png'))
 SELECTION_BANNER = pygame.transform.scale_by(SELECTION_BANNER, 6)
 SELECTION_BANNER_RECT = SELECTION_BANNER.get_rect()
 
-SETA = pygame.image.load(os.path.join('imgs', 'seta.png'))
-SETA = pygame.transform.scale_by(SETA, 2)
+SETA = pygame.image.load(os.path.join('imgs', 'arrow_pointer.png'))
+SETA = pygame.transform.rotate(SETA, 136)
+SETA = pygame.transform.scale_by(SETA, 0.35)
 SETA_RECT = SETA.get_rect()
 
 MENU = pygame.image.load(os.path.join('imgs', 'menu.png'))
-
 MENU_RECT = MENU.get_rect()
 
 
 def draw_start_screen(screen: pygame.surface):
-    """_summary_
-        Desenha a tela inicial, com a logo do logo e a ordem de click para comecar
-        a selecao de personagem
-
-    Args:
-        screen (Surface): tela redimensionada
-    """
     font = pygame.font.Font(None, 40)
-    text = font.render('Click anywhere to star!', True, pygame.Color("YELLOW"))
+    text = font.render("Let's get start!", True, pygame.Color("YELLOW"))
     text_rect = text.get_rect(center=(WIDTH/2, 200))
     
     screen.blit(START_BACKGROUND, START)
@@ -62,151 +56,121 @@ def draw_start_screen(screen: pygame.surface):
     screen.blit(text, text_rect)
     update_screen()
     
-    run = True
-    while run:  # loop para verificar se o botao do mouse foi clickado
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-                pygame.quit()
-                
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                run = False
-            
+    time.sleep(1)
 
 
-def draw_character_selection(screen: pygame.surface, character_list: pygame.sprite.Group):
-    """Desenha a tela de seleção de personagens e permite ao jogador selecionar até 3 personagens.
+def draw_character_selection(screen: pygame.surface, character_list: list):
+    selected_characters = list()
+    x, y = 70, 260
 
-    Args:
-        screen (Surface): Tela redimensionada.
-        character_list (Group): Grupo com todos os personagens do jogo.
-
-    Returns:
-        Group: Grupo com apenas os 3 personagens selecionados.
-    """
-    selected_characters = pygame.sprite.Group()
-    character_positions = []
-
-    # Desenha os personagens no lugar
-    screen.blit(BACKGROUND, START)
-    x = 180
-    for character in character_list:
-        character.draw_character_position(screen, (x, 420))
-        character_positions.append((character, pygame.Rect(x, 420, character.rect.width, character.rect.height)))
-        x += 150
-
-    # Inicializando a posição da seta
-    seta_index = 0
-    SETA_RECT.midbottom = character_positions[seta_index][1].midtop
-
-    # Criando o botão 'Start'
-    start_button_font = pygame.font.Font(None, 40)
-    start_button_text = start_button_font.render('START', True, pygame.Color("YELLOW"))
-    start_button_rect = start_button_text.get_rect(center=(WIDTH / 2, 600))
+    banner_positions = list()
 
     run = True
     while run:
-        for event in pygame.event.get():
-            # se fechou o jogo
-            if event.type == pygame.QUIT:
-                run = False
-                
-            # se apertou tecla do teclado
-            elif event.type == pygame.KEYDOWN:
-                
-                # left arrow (<-)
-                if event.key == pygame.K_LEFT:
-                    seta_index = max(0, seta_index - 1)
-                    
-                # right arrow (->)
-                elif event.key == pygame.K_RIGHT:
-                    seta_index = min(len(character_positions) - 1, seta_index + 1)
-                    
-                # select key (Z)
-                elif event.key == pygame.K_z:  # selection
-                    character, rect = character_positions[seta_index]
-    
-                    # Verifica se o personagem ja esta no grupo para removelo,
-                    if character in selected_characters:  # se ja ta no grupo
-                        selected_characters.remove(character)
-                        
-                    # caso nao esteja e o grupo nao esteja cheio, ele é adicionado 
-                    elif len(selected_characters) < 3:  #
-                        selected_characters.add(character)
-                
-                # Atualizando a posição da seta de acordo com o ultimo movimento
-                SETA_RECT.midbottom = character_positions[seta_index][1].midtop
-
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if start_button_rect.collidepoint(event.pos) and len(selected_characters) >= 1:
-                    run = False
-        #fim do for
-        
-        # Redesenha os personagens e destaca os selecionados
+        time.sleep(0.25)
         screen.blit(BACKGROUND, START)
-        for character, rect in character_positions:
-            character.draw_character_position(screen, rect.topleft)
-            if character in selected_characters:
-                # Calcula a posição para desenhar o banner de seleção atrás do personagem
-                banner_position = (rect.centerx - SELECTION_BANNER_RECT.width / 2,
-                                   rect.centery - SELECTION_BANNER_RECT.height / 2)
-                screen.blit(SELECTION_BANNER, banner_position)
-                character.draw_character_position(screen, rect.topleft)
 
-        # Desenha a seta
-        screen.blit(SETA, SETA_RECT.topleft)
+        # imprime os banners ativos
+        for banner in banner_positions:
+            screen.blit(SELECTION_BANNER, banner)
 
-        # Desenha o texto de instruções
-        font = pygame.font.Font(None, 40)
-        text = font.render('Press Z and arrows to select till 3 characters!', True, pygame.Color("YELLOW"))
-        text_rect = text.get_rect(center=(WIDTH / 2, 200))
-        screen.blit(text, text_rect)
+        # imprime os personagens
+        draw_character_list(screen, character_list)
 
-        # Desenha o botão 'Start' se 3 personagens estiverem selecionados
-        if len(selected_characters) >= 1:
-            screen.blit(start_button_text, start_button_rect)
+        # imprime a seta
+        screen.blit(SETA, (x, y))
 
-        pygame.display.flip()
-        # fim do while
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                
+            # movimento da seta
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT and x+150 <= 800:
+                    x += 150
+                    
+                elif event.key == pygame.K_LEFT and x-150 >= 70: 
+                    x -= 150
 
+                elif event.key == pygame.K_RETURN and len(selected_characters) >= 1:
+                    return selected_characters
+
+                elif event.key == pygame.K_z and len(selected_characters) < 3:
+                    if x == 70:
+                        if character_list[0] in selected_characters:
+                            selected_characters.remove(character_list[0])
+                            banner_positions.remove([100, 400])
+                            
+                        else:
+                            selected_characters.append(character_list[0])
+                            banner_positions.append([100, 400])
+                        
+                    elif x == 220:
+                        if character_list[1] in selected_characters:
+                            selected_characters.remove(character_list[1])
+                            banner_positions.remove([250, 400])
+
+                        else:
+                            selected_characters.append(character_list[1])
+                            banner_positions.append([250, 400])
+                        
+                    elif x == 370:
+                        if character_list[2] in selected_characters:
+                            selected_characters.remove(character_list[2])
+                            banner_positions.remove([400, 400])
+
+                        else:
+                            selected_characters.append(character_list[2])
+                            banner_positions.append([400, 400])
+                        
+                    elif x == 520:
+                        if character_list[3] in selected_characters:
+                            selected_characters.remove(character_list[3])
+                            banner_positions.remove([550, 400])
+
+                        else:
+                            selected_characters.append(character_list[3])
+                            banner_positions.append([550, 400])
+                        
+                    elif x == 670:
+                        if character_list[4] in selected_characters:
+                            selected_characters.remove(character_list[4])
+                            banner_positions.append([700, 400])
+
+                        else:
+                            selected_characters.append(character_list[4])
+                            banner_positions.append([700, 400])
+
+        update_screen()
+        
     return selected_characters
 
 
-def draw_screen(screen: pygame.surface, character_list: pygame.sprite.Group, 
-                enemies_list: pygame.sprite.Group) -> None:
-    """_summary_
-        Desenha a tela principal do jogo, contendo:
-        1- Herois selecionados
-        2- Viloes
-        3- Menu
-
-    Args:
-        screen (Surface): tela redimensionada
-        character_list (Group): lista de personagens
-        enemies_list (Group): lista dos inimigos
-    """
-    
-    screen.blit(BACKGROUND_INGAME, (START))
-
-    x = 100
-    for character in character_list:
-        character.draw_character_position(screen, (x, 420))
-        x += 150
-        
-    x, y = WIDTH-250, 270
-    for enemies in enemies_list:
-        enemies.draw_character_position(screen, (x, y))
-        x -= 250
-        y -= 180
+def draw_screen(screen: pygame.surface, character_list: list, enemy_list: list) -> None:
+    screen.blit(BACKGROUND_INGAME, START)
+    draw_character_list(screen, character_list)
+    draw_enemy_list(screen, enemy_list)
 
 
-def draw_menu(screen: pygame.surface, character_list: list[characters.Character]) -> None:
+def draw_menu(screen: pygame.surface, character_list: list[Character]) -> None:
     screen.blit(MENU, MENU_RECT)
 
 
 def update_screen() -> None:
-    """_summary_
-        Atualiza a taxa de quadros para 60 e atualiza a exibicao da tela
-    """
     clock.tick(FPS)  # Definir a taxa de quadros
     pygame.display.flip()  # Atualizar a exibição
+
+
+def draw_character_list(screen: pygame.surface, character_list: list[Character]) -> None:
+    x = 100
+    for character in character_list:
+        character.draw_character_position(screen, [x, 420])
+        x += 150
+
+
+def draw_enemy_list(screen: pygame.surface, enemy_list: list[Character]) -> None:
+    x, y = WIDTH-250, 270
+    for enemies in enemy_list:
+        enemies.draw_character_position(screen, [x, y])
+        x -= 250
+        y -= 180

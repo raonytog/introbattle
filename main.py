@@ -4,16 +4,16 @@ from screen import *
 pygame.init()
 
 # personagens
-CHARACTER_LIST = pygame.sprite.Group()
-CHARACTER_LIST.add(Meele())
-CHARACTER_LIST.add(Mage())
-CHARACTER_LIST.add(Ranged())
-CHARACTER_LIST.add(Summoner())
-CHARACTER_LIST.add(Bard())
+CHARACTER_LIST = list()
+CHARACTER_LIST.append(Meele())
+CHARACTER_LIST.append(Mage())
+CHARACTER_LIST.append(Ranged())
+CHARACTER_LIST.append(Summoner())
+CHARACTER_LIST.append(Bard())
 
-ENEMIES_LIST = pygame.sprite.Group()
-ENEMIES_LIST.add(DukeFisheron())
-ENEMIES_LIST.add(EyeOfCtchulu())
+ENEMIES_LIST = list()
+ENEMIES_LIST.append(DukeFisheron())
+ENEMIES_LIST.append(EyeOfCtchulu())
 
 SELECTED_CHARACTERS_LIST = pygame.sprite.Group()
 
@@ -22,15 +22,16 @@ def main():
     draw_start_screen(SCREEN)
     SELECTED_CHARACTERS_LIST = draw_character_selection(SCREEN, CHARACTER_LIST)
     
-    end = False
-    while not end:
+    run = True
+    while run:
         draw_screen(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST)
         draw_menu(SCREEN, SELECTED_CHARACTERS_LIST)
         update_screen()
             
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # sai do jogo
-                end = True
+                run = True
+                pygame.quit()
                 
             # fim do for
         # fim do while
