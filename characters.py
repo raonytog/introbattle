@@ -78,6 +78,7 @@ class Meele(Character):
         super().__init__(100, 40, 30, 30, 'meele')
         
     # def special(self):
+    # dano critico
 
 
 class Mage(Character):
@@ -85,6 +86,7 @@ class Mage(Character):
         super().__init__(100, 30, 50, 50, 'mage') 
         
     # def special(self):
+    # dano em area com atk/2
 
 
 class Ranged(Character):
@@ -92,6 +94,7 @@ class Ranged(Character):
         super().__init__(100, 10, 100, 100, 'ranged')
         
     # def special(self):
+    # ataca 2x seguidas
         
         
 class Summoner(Character):
@@ -99,6 +102,7 @@ class Summoner(Character):
         super().__init__(100, 5, 40, 150, 'summoner')
         
     # def special(self):
+    # invoca um pet que causa dpt (dano por turno)
         
 
 class Bard(Character):
@@ -106,6 +110,7 @@ class Bard(Character):
         super().__init__(100, 40, 50, 45, 'bard')
         
     # def special(self):
+    # cura ul aliado
         
 
 class EyeOfCtchulu(Character):
@@ -113,6 +118,7 @@ class EyeOfCtchulu(Character):
         super().__init__(400, 40, 70, 40, 'eye_of_ctchulu')
         
     # def special(self):
+    # tira um personagem de campo
         
 
 class DukeFisheron(Character):
@@ -120,3 +126,4 @@ class DukeFisheron(Character):
         super().__init__(200, 10, 150, 100, 'duke_fishron')
         
     # def special(self):
+    # dano em area atk/3 
