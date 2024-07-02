@@ -1,6 +1,7 @@
 from pygame import *
 from characters import *
 import time
+from random import randint
 
 
 pygame.init()
@@ -61,7 +62,7 @@ def draw_start_screen(screen: pygame.surface):
 
 def draw_character_selection(screen: pygame.surface, character_list: list):
     selected_characters = list()
-    x, y = 70, 260
+    x, y = 117, 260
 
     banner_positions = list()
 
@@ -78,7 +79,7 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
         draw_character_list(screen, character_list)
 
         # imprime a seta
-        screen.blit(SETA, (x, y))
+        screen.blit(SETA, (x, randint(260, 280)))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -95,51 +96,51 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
                 elif event.key == pygame.K_RETURN and len(selected_characters) >= 1:
                     return selected_characters
 
-                elif event.key == pygame.K_z and len(selected_characters) < 3:
-                    if x == 70:
+                elif event.key == pygame.K_z:
+                    if x == 117:
                         if character_list[0] in selected_characters:
                             selected_characters.remove(character_list[0])
-                            banner_positions.remove([100, 400])
+                            banner_positions.remove([150, 400])
                             
                         else:
                             selected_characters.append(character_list[0])
-                            banner_positions.append([100, 400])
+                            banner_positions.append([150, 400])
                         
-                    elif x == 220:
+                    elif x == 117+150:
                         if character_list[1] in selected_characters:
                             selected_characters.remove(character_list[1])
-                            banner_positions.remove([250, 400])
+                            banner_positions.remove([300, 400])
 
                         else:
                             selected_characters.append(character_list[1])
-                            banner_positions.append([250, 400])
+                            banner_positions.append([300, 400])
                         
-                    elif x == 370:
+                    elif x == 117 + 2*150:
                         if character_list[2] in selected_characters:
                             selected_characters.remove(character_list[2])
-                            banner_positions.remove([400, 400])
+                            banner_positions.remove([450, 400])
 
                         else:
                             selected_characters.append(character_list[2])
-                            banner_positions.append([400, 400])
+                            banner_positions.append([450, 400])
                         
-                    elif x == 520:
+                    elif x == 117 + 3*150:
                         if character_list[3] in selected_characters:
                             selected_characters.remove(character_list[3])
-                            banner_positions.remove([550, 400])
+                            banner_positions.remove([600, 400])
 
                         else:
                             selected_characters.append(character_list[3])
-                            banner_positions.append([550, 400])
+                            banner_positions.append([600, 400])
                         
-                    elif x == 670:
+                    elif x == 117 + 4*150:
                         if character_list[4] in selected_characters:
                             selected_characters.remove(character_list[4])
-                            banner_positions.append([700, 400])
+                            banner_positions.append([750, 400])
 
                         else:
                             selected_characters.append(character_list[4])
-                            banner_positions.append([700, 400])
+                            banner_positions.append([750, 400])
 
         update_screen()
         
@@ -162,15 +163,17 @@ def update_screen() -> None:
 
 
 def draw_character_list(screen: pygame.surface, character_list: list[Character]) -> None:
-    x = 100
+    x = 150
     for character in character_list:
         character.draw_character_position(screen, [x, 420])
         x += 150
 
 
 def draw_enemy_list(screen: pygame.surface, enemy_list: list[Character]) -> None:
-    x, y = WIDTH-250, 270
+    x, y = WIDTH-250, 170
+
     for enemies in enemy_list:
+        time.sleep(0.25)
         enemies.draw_character_position(screen, [x, y])
         x -= 250
-        y -= 180
+        y -= 150

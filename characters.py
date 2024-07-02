@@ -4,7 +4,6 @@ import os
 WIDTH, HEIGHT = 1024, 728
 HERO_SIZE = (70, 100)
 
-
 class Character(pygame.sprite.Sprite):
     """
         // stats
@@ -41,12 +40,14 @@ class Character(pygame.sprite.Sprite):
         self.img = pygame.transform.flip(self.img, True, False)
         self.rect = self.img.get_rect()
 
+    # funcoes de desenhar
     def draw_character(self, screen: pygame.surface):
         screen.blit(self.img, self.rect)
         
     def draw_character_position(self, screen: pygame.surface, position: list):
         screen.blit(self.img, position)
 
+    # funcoes de get
     def get_character_life_points(self) -> int:
         return self.life_points
     
@@ -65,61 +66,41 @@ class Character(pygame.sprite.Sprite):
     def get_caracter_rect(self) -> pygame.rect:
         return self.rect
     
+    # funcoes de combate
     def receive_dmg(self, damage: int) -> None:
         self.life_points -= damage * (50/(50 + self.defense))
 
-
 class Meele(Character):
     def __init__(self):
-        super().__init__(120, 40, 30, 30, 'meele')
-        
-    # def attack(self):
-        
-    # def defense(self):
+        super().__init__(100, 40, 30, 30, 'meele')
         
     # def special(self):
 
 
 class Mage(Character):
     def __init__(self):
-        super().__init__(100, 20, 50, 50, 'mage') 
-        
-    # def attack(self):
-        
-    # def defense(self):
+        super().__init__(100, 30, 50, 50, 'mage') 
         
     # def special(self):
 
 
 class Ranged(Character):
     def __init__(self):
-        super().__init__(80, 10, 100, 100, 'ranged')
-        
-    # def attack(self):
-        
-    # def defense(self):
+        super().__init__(100, 10, 100, 100, 'ranged')
         
     # def special(self):
         
         
 class Summoner(Character):
     def __init__(self):
-        super().__init__(80, 5, 50, 150, 'summoner')
-        
-    # def attack(self):
-        
-    # def defense(self):
+        super().__init__(100, 5, 40, 150, 'summoner')
         
     # def special(self):
         
 
 class Bard(Character):
     def __init__(self):
-        super().__init__(80, 40, 50, 45, 'bard')
-        
-    # def attack(self):
-        
-    # def defense(self):
+        super().__init__(100, 40, 50, 45, 'bard')
         
     # def special(self):
         
@@ -128,19 +109,11 @@ class EyeOfCtchulu(Character):
     def __init__(self):
         super().__init__(400, 40, 70, 40, 'eye_of_ctchulu')
         
-    # def attack(self):
-        
-    # def defense(self):
-        
     # def special(self):
         
 
 class DukeFisheron(Character):
     def __init__(self):
-        super().__init__(170, 10, 150, 100, 'duke_fishron')
-        
-    # def attack(self):
-        
-    # def defense(self):
+        super().__init__(200, 10, 150, 100, 'duke_fishron')
         
     # def special(self):
