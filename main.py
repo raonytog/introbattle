@@ -30,12 +30,12 @@ def main():
         update_screen()
             
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:  # sai do jogo
+            if event.type == pygame.QUIT: 
                 run = True
                 pygame.quit()
                 
-            # fim do for
-        # fim do while
+        # fim do for
+    # fim do while
         
     pygame.quit()
 

@@ -40,12 +40,14 @@ class Character(pygame.sprite.Sprite):
         self.img = pygame.transform.flip(self.img, True, False)
         self.rect = self.img.get_rect()
 
+
     # funcoes de desenhar
     def draw_character(self, screen: pygame.surface):
         screen.blit(self.img, self.rect)
         
     def draw_character_position(self, screen: pygame.surface, position: list):
         screen.blit(self.img, position)
+
 
     # funcoes de get
     def get_character_life_points(self) -> int:
@@ -65,6 +67,7 @@ class Character(pygame.sprite.Sprite):
     
     def get_caracter_rect(self) -> pygame.rect:
         return self.rect
+    
     
     # funcoes de combate
     def receive_dmg(self, damage: int) -> None:
