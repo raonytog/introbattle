@@ -96,15 +96,16 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
                 elif event.key == pygame.K_RETURN and len(selected_characters) >= 1:
                     return selected_characters
 
-                elif event.key == pygame.K_z:
+                elif event.key == pygame.K_z and len(selected_characters) <= 3:
                     if x == 117:
                         if character_list[0] in selected_characters:
                             selected_characters.remove(character_list[0])
                             banner_positions.remove([150, 400])
                             
                         else:
-                            selected_characters.append(character_list[0])
-                            banner_positions.append([150, 400])
+                            if len(selected_characters) < 3:
+                                selected_characters.append(character_list[0])
+                                banner_positions.append([150, 400])
                         
                     elif x == 117+150:
                         if character_list[1] in selected_characters:
@@ -112,8 +113,9 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
                             banner_positions.remove([300, 400])
 
                         else:
-                            selected_characters.append(character_list[1])
-                            banner_positions.append([300, 400])
+                            if len(selected_characters) < 3:
+                                selected_characters.append(character_list[1])
+                                banner_positions.append([300, 400])
                         
                     elif x == 117 + 2*150:
                         if character_list[2] in selected_characters:
@@ -121,8 +123,9 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
                             banner_positions.remove([450, 400])
 
                         else:
-                            selected_characters.append(character_list[2])
-                            banner_positions.append([450, 400])
+                            if len(selected_characters) < 3:
+                                selected_characters.append(character_list[2])
+                                banner_positions.append([450, 400])
                         
                     elif x == 117 + 3*150:
                         if character_list[3] in selected_characters:
@@ -130,8 +133,9 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
                             banner_positions.remove([600, 400])
 
                         else:
-                            selected_characters.append(character_list[3])
-                            banner_positions.append([600, 400])
+                            if len(selected_characters) < 3:
+                                selected_characters.append(character_list[3])
+                                banner_positions.append([600, 400])
                         
                     elif x == 117 + 4*150:
                         if character_list[4] in selected_characters:
@@ -139,8 +143,9 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
                             banner_positions.append([750, 400])
 
                         else:
-                            selected_characters.append(character_list[4])
-                            banner_positions.append([750, 400])
+                            if len(selected_characters) < 3:
+                                selected_characters.append(character_list[4])
+                                banner_positions.append([750, 400])
 
         update_screen()
         
