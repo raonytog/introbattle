@@ -43,10 +43,6 @@ SETA = pygame.transform.rotate(SETA, 136)
 SETA = pygame.transform.scale_by(SETA, 0.35)
 SETA_RECT = SETA.get_rect()
 
-MENU = pygame.image.load(os.path.join('imgs', 'menu.png'))
-MENU_RECT = MENU.get_rect()
-
-
 def draw_start_screen(screen: pygame.surface):
     font = pygame.font.Font(None, 40)
     text = font.render("Let's get start!", True, pygame.Color("YELLOW"))
@@ -156,11 +152,6 @@ def draw_screen(screen: pygame.surface, character_list: list, enemy_list: list) 
     screen.blit(BACKGROUND_INGAME, START)
     draw_character_list(screen, character_list)
     draw_enemy_list(screen, enemy_list)
-
-
-def draw_menu(screen: pygame.surface, character_list: list[Character]) -> None:
-    screen.blit(MENU, MENU_RECT)
-
 
 def update_screen() -> None:
     clock.tick(FPS)  # Definir a taxa de quadros

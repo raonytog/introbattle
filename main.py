@@ -1,5 +1,6 @@
 from characters import *
 from screen import *
+from combat import *
 
 pygame.init()
 
