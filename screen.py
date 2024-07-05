@@ -41,7 +41,7 @@ SELECTION_BANNER_RECT = SELECTION_BANNER.get_rect()
 SETA = pygame.image.load(os.path.join('imgs', 'arrow_pointer.png'))
 SETA = pygame.transform.rotate(SETA, 136)
 SETA = pygame.transform.scale_by(SETA, 0.35)
-SETA_RECT = SETA.get_rect()
+
 
 def draw_start_screen(screen: pygame.surface):
     font = pygame.font.Font(None, 40)

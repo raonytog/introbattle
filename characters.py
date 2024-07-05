@@ -19,7 +19,7 @@ class Character(pygame.sprite.Sprite):
         pos: posicao na tela (x, y)
     """
 
-    def __init__(self, life_poins: int, defense: int, speed: int, attack: int, name: str):
+    def __init__(self, life_poins: float, defense: int, speed: int, attack: int, name: str):
         super().__init__()
         self.life_points = life_poins
         self.defense = defense
@@ -50,7 +50,7 @@ class Character(pygame.sprite.Sprite):
 
 
     # funcoes de get
-    def get_character_life_points(self) -> int:
+    def get_character_life_points(self) -> float:
         return self.life_points
     
     def get_character_defense(self) -> int:
@@ -72,6 +72,7 @@ class Character(pygame.sprite.Sprite):
     # funcoes de combate
     def receive_dmg(self, damage: int) -> None:
         self.life_points -= damage * (50/(50 + self.defense))
+        
 
 class Meele(Character):
     def __init__(self):
@@ -115,7 +116,7 @@ class Bard(Character):
 
 class EyeOfCtchulu(Character):
     def __init__(self):
-        super().__init__(400, 40, 70, 40, 'eye_of_ctchulu')
+        super().__init__(400, 40, 70, 20, 'eye_of_ctchulu')
         
     # def special(self):
     # tira um personagem de campo
@@ -127,3 +128,17 @@ class DukeFisheron(Character):
         
     # def special(self):
     # dano em area atk/3 
+
+def is_player_defeated(character_list: list[Character]) -> bool:
+    for char in character_list:
+        if char.get_character_life_points > 0:
+            return False
+        
+    return True
+
+def is_player_winner(enemy_list: list[Character]) -> bool:
+    for enemy in enemy_list:
+        if enemy.get_character_life_points > 0:
+            return False
+        
+    return True

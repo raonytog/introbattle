@@ -22,17 +22,22 @@ SELECTED_CHARACTERS_LIST = pygame.sprite.Group()
 def main():
     draw_start_screen(SCREEN)
     SELECTED_CHARACTERS_LIST = draw_character_selection(SCREEN, CHARACTER_LIST)
-    
+    SELECTED_CHARACTERS_LIST.sort(key=lambda character: character.speed, reverse=True)
+
     run = True
     while run:
+        count = 0
         draw_screen(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST)
-        draw_menu(SCREEN, SELECTED_CHARACTERS_LIST)
+        draw_menu(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST)
         update_screen()
             
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
                 run = True
                 pygame.quit()
+                
+        if is_player_defeated(SELECTED_CHARACTERS_LIST) or is_player_winner(ENEMIES_LIST):
+            run = False
                 
         # fim do for
     # fim do while
