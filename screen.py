@@ -52,8 +52,7 @@ def draw_start_screen(screen: pygame.surface):
     screen.blit(INTROBATTLE, INTROBATTLE_RECT)
     screen.blit(text, text_rect)
     update_screen()
-    
-    time.sleep(1)
+    time.sleep(1.5)
 
 
 def draw_character_selection(screen: pygame.surface, character_list: list):
@@ -64,7 +63,6 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
 
     run = True
     while run:
-        time.sleep(0.25)
         screen.blit(BACKGROUND, START)
 
         # imprime os banners ativos
@@ -75,7 +73,7 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
         draw_character_list(screen, character_list)
 
         # imprime a seta
-        screen.blit(SETA, (x, randint(260, 280)))
+        screen.blit(SETA, [x, y])
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -169,7 +167,6 @@ def draw_enemy_list(screen: pygame.surface, enemy_list: list[Character]) -> None
     x, y = WIDTH-250, 170
 
     for enemies in enemy_list:
-        time.sleep(0.25)
         enemies.draw_character_position(screen, [x, y])
         x -= 250
         y -= 150

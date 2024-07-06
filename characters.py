@@ -72,6 +72,8 @@ class Character(pygame.sprite.Sprite):
     # funcoes de combate
     def receive_dmg(self, damage: int) -> None:
         self.life_points -= damage * (50/(50 + self.defense))
+        if self.life_points < 0:
+            self.life_points = 0
         
 
 class Meele(Character):
@@ -131,14 +133,14 @@ class DukeFisheron(Character):
 
 def is_player_defeated(character_list: list[Character]) -> bool:
     for char in character_list:
-        if char.get_character_life_points > 0:
+        if char.get_character_life_points() > 0:
             return False
         
     return True
 
 def is_player_winner(enemy_list: list[Character]) -> bool:
     for enemy in enemy_list:
-        if enemy.get_character_life_points > 0:
+        if enemy.get_character_life_points() > 0:
             return False
         
     return True
