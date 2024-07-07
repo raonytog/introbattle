@@ -157,10 +157,11 @@ def update_screen() -> None:
 
 
 def draw_character_list(screen: pygame.surface, character_list: list[Character]) -> None:
-    x = 150
+    x, y = 150, 420
     for character in character_list:
-        character.draw_character_position(screen, [x, 420])
-        x += 150
+        if (character.get_character_life_points() > 0):
+            character.draw_character_position(screen, [x, y])
+            x += 150
 
 
 def draw_enemy_list(screen: pygame.surface, enemy_list: list[Character]) -> None:

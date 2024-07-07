@@ -20,7 +20,7 @@ SPECIAL_RECT = SPECIAL_TEXT.get_rect()
 CHARM_TEXT = FONT.render("Charm", True, pygame.Color("YELLOW"))
 CHARM_RECT = CHARM_TEXT.get_rect()
 
-def draw_menu_options(screen: pygame.surface, character_list: list[Character]) -> None:
+def draw_menu_options(screen: pygame.surface, character: Character, character_list: list[Character], enemy_list: list[Character]) -> None:
     screen.blit(MENU, MENU_RECT)
     screen.blit(ATTACK_TEXT, [100, HEIGHT-160])
     screen.blit(SPECIAL_TEXT, [300, HEIGHT-160])
@@ -29,17 +29,33 @@ def draw_menu_options(screen: pygame.surface, character_list: list[Character]) -
     screen.blit(CHARM_TEXT, [300, HEIGHT-100])
     
     y = 150
-    for character in character_list:
-        font = pygame.font.Font(None, 30)
-        text = font.render(f"{character.get_character_name()}: {character.get_character_life_points():.0f}/100", 
+    font = pygame.font.Font(None, 30)
+    # mostra de quem eh o turno
+    font_2 = pygame.font.Font(None, 25)
+    text = font_2.render(f"It's {character.get_character_name()} turn!", True, pygame.Color("YELLOW"))
+    screen.blit(text, [WIDTH-300, HEIGHT-190])
+    
+    # mostra a vida dos herois
+    for char in character_list:
+        text = font.render(f"{char.get_character_name()}: {char.get_character_life_points():.0f}/100", 
                            True, pygame.Color("YELLOW"))
         screen.blit(text, [WIDTH-300, HEIGHT-y])
         y -= 20
         
+    # mostra a vida dos inimigos
+    for enemy in enemy_list:
+        text = font.render(f"{enemy.get_character_name()}: {enemy.get_character_life_points():.0f}/{enemy.get_character_max_life_points():.0f}", 
+                           True, pygame.Color("YELLOW"))
+        screen.blit(text, [WIDTH-300, HEIGHT-y])
+        y -= 20
+        
+        
 def character_movement(character: Character, enemy_list: list[Character], position: list, screen: pygame.surface) -> None:
     # attack
-    if list == [80, 160]:
-        choose_enemy(enemy_list)
+    if position == [80, 568]:
+        enemy = choose_enemy(screen, character, enemy_list)
+        enemy.receive_dmg(character.get_character_attack())
+        
         
     # elif list == [280, 160]:
     #
@@ -48,7 +64,7 @@ def character_movement(character: Character, enemy_list: list[Character], positi
     # elif list == [80, 568]:
         
         
-def enemy_moviment(character_list: list[Character], enemy_list: list[Character], screen: pygame.surface) -> None:
+def enemy_moviment(character: Character, character_list: list[Character], enemy_list: list[Character], screen: pygame.surface) -> None:
     for char in character_list:
         if char.get_character_life_points() > 0:
             if enemy_list[0].life_points > 0:
@@ -63,14 +79,17 @@ def enemy_moviment(character_list: list[Character], enemy_list: list[Character],
             else:
                 break
 
-def draw_menu(screen: pygame.surface, character_list: list[Character], enemy_list: list[Character]) -> None:
+def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_list: list[Character]) -> None:
     run = True
     x, y = 80, HEIGHT-160
     while run:
-        draw_menu_options(screen, character_list)
-        screen.blit(SELECT_TEXT, [x, y])
+        draw_screen(SCREEN, character_list, enemy_list)
         
         for character in character_list:
+            draw_menu_options(screen, character, character_list, enemy_list)
+        
+            # seta apontando pra opcao de acao selecionada
+            screen.blit(SELECT_TEXT, [x, y])
             for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
@@ -91,7 +110,10 @@ def draw_menu(screen: pygame.surface, character_list: list[Character], enemy_lis
                             
                         elif event.key == pygame.K_z:
                             character_movement(character, enemy_list, [x, y], screen)
-                            enemy_moviment(character_list, enemy_list, screen)
+                            update_screen()
+                            
+                            enemy_moviment(character, character_list, enemy_list, screen)
+                            update_screen()
                             
         update_screen()
         
@@ -99,8 +121,13 @@ def draw_menu(screen: pygame.surface, character_list: list[Character], enemy_lis
     
     
 
-def choose_enemy(screen: pygame.surface, enemy_list: list[Character])-> Character:
-    screen.blit(enemy_list[1].img, [WIDTH/2, 170])
+def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[DukeFisheron, EyeOfCtchulu])-> Character:
+    x1, y1 = WIDTH-250, 170
+    x2, y2 = WIDTH-250-250, 170-150
+    
+    screen.blit(enemy_list[1].get_selected_img(), [x2, y2])
+    selected = 1
+    screen.blit(enemy_list[0].img, [x1, y1]) # o outro
     update_screen()
     
     run = True
@@ -111,13 +138,22 @@ def choose_enemy(screen: pygame.surface, enemy_list: list[Character])-> Characte
                 
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
-                    x, y = WIDTH-250, 170
-                    screen.blit(enemy_list[1], [x, y])
+                    screen.blit(enemy_list[0].get_selected_img(), [x1, y1])
+                    selected = 0
+                    screen.blit(enemy_list[1].img, [x2, y2]) # o outro
+                    update_screen()
                             
                 elif event.key == pygame.K_LEFT:
-                    x, y = WIDTH-250-250, 170-150
-                    screen.blit(enemy_list[1], [x, y])
+                    screen.blit(enemy_list[1].get_selected_img(), [x2, y2])
+                    selected = 1
+                    screen.blit(enemy_list[0].img, [x1, y1]) # o outro
+                    update_screen()
+                    
+                elif event.key == pygame.K_z:
+                    return enemy_list[selected]
+
                 
-    update_screen()
+        # tem que fazer a logica ainda para retornar o inimigo selecionado 
+        update_screen()
                     
             

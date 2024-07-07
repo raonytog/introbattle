@@ -22,10 +22,10 @@ class Character(pygame.sprite.Sprite):
     def __init__(self, life_poins: float, defense: int, speed: int, attack: int, name: str):
         super().__init__()
         self.life_points = life_poins
+        self.max_life_points = life_poins
         self.defense = defense
         self.speed = speed
         self.attack = attack
-        
         self.name = name
         self.img = pygame.image.load(os.path.join('imgs', f'{name}.png'))
         
@@ -52,6 +52,9 @@ class Character(pygame.sprite.Sprite):
     # funcoes de get
     def get_character_life_points(self) -> float:
         return self.life_points
+    
+    def get_character_max_life_points(self) -> float:
+        return self.max_life_points
     
     def get_character_defense(self) -> int:
         return self.defense
@@ -119,7 +122,14 @@ class Bard(Character):
 class EyeOfCtchulu(Character):
     def __init__(self):
         super().__init__(400, 40, 70, 20, 'eye_of_ctchulu')
+        self.selected = pygame.image.load(os.path.join('imgs', 'eye_of_ctchulu_selected.png'))
+        self.selected = pygame.transform.flip(self.selected, False, True)
+        self.selected = pygame.transform.rotate(self.selected, 135)
+
         
+    def get_selected_img(self):
+        return self.selected
+    
     # def special(self):
     # tira um personagem de campo
         
@@ -127,7 +137,11 @@ class EyeOfCtchulu(Character):
 class DukeFisheron(Character):
     def __init__(self):
         super().__init__(200, 10, 150, 100, 'duke_fishron')
+        self.selected = pygame.image.load(os.path.join('imgs', 'duke_fishron_selected.png'))
+        self.selected = pygame.transform.flip(self.selected, True, False)
         
+    def get_selected_img(self):
+        return self.selected
     # def special(self):
     # dano em area atk/3 
 

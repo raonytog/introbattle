@@ -26,11 +26,9 @@ def main():
 
     run = True
     while run:
-        draw_screen(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST)
-        draw_menu(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST)
+        combat_loop(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST)
         update_screen()
         
-            
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = True
@@ -39,10 +37,8 @@ def main():
                 
         # fim do for
     # fim do while
-        
     
     pygame.quit()
-
 
 if __name__ == "__main__":
     main()
