@@ -27,6 +27,12 @@ BACKGROUND = pygame.transform.scale(BACKGROUND, SIZE)
 BACKGROUND_INGAME = pygame.image.load(os.path.join('imgs', 'corruption_desert_day.png'))
 BACKGROUND_INGAME = pygame.transform.scale(BACKGROUND_INGAME, SIZE)
 
+WIN_SCREEN = pygame.image.load(os.path.join('imgs', 'forest_sky.png'))
+WIN_SCREEN = pygame.transform.scale(WIN_SCREEN, SIZE)
+
+LOST_SCREEN = pygame.image.load(os.path.join('imgs', 'corruption_desert_night.png'))
+LOST_SCREEN = pygame.transform.scale(LOST_SCREEN, SIZE)
+
 START_BACKGROUND = pygame.image.load(os.path.join('imgs', 'start_screen.png'))
 
 INTROBATTLE = pygame.image.load(os.path.join('imgs', 'introbattle.png'))
@@ -159,15 +165,44 @@ def update_screen() -> None:
 def draw_character_list(screen: pygame.surface, character_list: list[Character]) -> None:
     x, y = 150, 420
     for character in character_list:
-        if (character.get_character_life_points() > 0):
+        if character.get_character_life_points() > 0:
             character.draw_character_position(screen, [x, y])
             x += 150
 
 
 def draw_enemy_list(screen: pygame.surface, enemy_list: list[Character]) -> None:
-    x, y = WIDTH-250, 170
+    x, y = WIDTH-250, 230
 
-    for enemies in enemy_list:
-        enemies.draw_character_position(screen, [x, y])
-        x -= 250
-        y -= 150
+    duke_pos = [x, y]
+    eye_pos = [x-250, y-250]
+
+    if enemy_list[0].get_character_life_points() > 0:
+        enemy_list[0].draw_character_position(screen, duke_pos)
+        
+    if enemy_list[1].get_character_life_points() > 0:
+        enemy_list[1].draw_character_position(screen, eye_pos)
+        
+def draw_win_screen(screen: pygame.surface) -> None:
+    screen.blit(WIN_SCREEN, START)
+    
+    font = pygame.font.Font(None, 40)
+    text = font.render("Congrats! You've winned!", True, pygame.Color("YELLOW"))
+    text_rect = text.get_rect(center=(WIDTH/2, 200))
+    screen.blit(text, text_rect)
+    
+    update_screen()
+    time.sleep(1.5)
+    pygame.quit()
+    
+def draw_lost_screen(screen: pygame.surface) -> None:
+    screen.blit(LOST_SCREEN, START)
+    
+    font = pygame.font.Font(None, 40)
+    text = font.render("You've lost!", True, pygame.Color("YELLOW"))
+    text_rect = text.get_rect(center=(WIDTH/2, 200))
+    screen.blit(text, text_rect)
+    
+    update_screen()
+    time.sleep(1.5)
+    pygame.quit()
+    

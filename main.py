@@ -26,14 +26,23 @@ def main():
 
     run = True
     while run:
-        combat_loop(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST)
-        update_screen()
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = True
                 pygame.quit()
-            
+                
+        combat_loop(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST)
+        update_screen()
+        
+        # player perdeu
+        if is_player_defeated(SELECTED_CHARACTERS_LIST):
+            draw_lost_screen(SCREEN)
+    
+        # player ganhou
+        elif is_player_winner(ENEMIES_LIST):
+            draw_win_screen(SCREEN)
+        
+        update_screen()
                 
         # fim do for
     # fim do while

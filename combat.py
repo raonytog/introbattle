@@ -30,6 +30,7 @@ def draw_menu_options(screen: pygame.surface, character: Character, character_li
     
     y = 150
     font = pygame.font.Font(None, 30)
+    
     # mostra de quem eh o turno
     font_2 = pygame.font.Font(None, 25)
     text = font_2.render(f"It's {character.get_character_name()} turn!", True, pygame.Color("YELLOW"))
@@ -85,36 +86,40 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
     while run:
         draw_screen(SCREEN, character_list, enemy_list)
         
-        for character in character_list:
-            draw_menu_options(screen, character, character_list, enemy_list)
+        if is_player_defeated(character_list) or is_player_winner(enemy_list):
+            break
         
-            # seta apontando pra opcao de acao selecionada
-            screen.blit(SELECT_TEXT, [x, y])
-            for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        
-                    # movimento da seta
-                    elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_RIGHT and x == 80:
-                            x += 200
+        for character in character_list:
+            if character.get_character_life_points() > 0:
+                draw_menu_options(screen, character, character_list, enemy_list)
+            
+                # seta apontando pra opcao de acao selecionada
+                screen.blit(SELECT_TEXT, [x, y])
+                for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
                             
-                        elif event.key == pygame.K_LEFT and x == 280:
-                            x -= 200
+                        # movimento da seta
+                        elif event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_RIGHT and x == 80:
+                                x += 200
+                                
+                            elif event.key == pygame.K_LEFT and x == 280:
+                                x -= 200
+                                
+                            elif event.key == pygame.K_UP and y == 568+60:
+                                y -= 60
                             
-                        elif event.key == pygame.K_UP and y == 568+60:
-                            y -= 60
-                        
-                        elif event.key == pygame.K_DOWN and y == 568:
-                            y += 60
-                            
-                        elif event.key == pygame.K_z:
-                            character_movement(character, enemy_list, [x, y], screen)
-                            update_screen()
-                            
-                            enemy_moviment(character, character_list, enemy_list, screen)
-                            update_screen()
-                            
+                            elif event.key == pygame.K_DOWN and y == 568:
+                                y += 60
+                                
+                            elif event.key == pygame.K_z:
+                                character_movement(character, enemy_list, [x, y], screen)
+                                update_screen()
+                                
+                                enemy_moviment(character, character_list, enemy_list, screen)
+                                update_screen()
+                                
         update_screen()
         
 # def choose_ally(character_list: list[Character]) -> Character:
@@ -122,12 +127,16 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
     
 
 def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[DukeFisheron, EyeOfCtchulu])-> Character:
-    x1, y1 = WIDTH-250, 170
-    x2, y2 = WIDTH-250-250, 170-150
+    x1, y1 = WIDTH-250, 230
+    x2, y2 = x1-250, y1-250
     
-    screen.blit(enemy_list[1].get_selected_img(), [x2, y2])
-    selected = 1
-    screen.blit(enemy_list[0].img, [x1, y1]) # o outro
+    if enemy_list[1].get_character_life_points() > 0:
+        screen.blit(enemy_list[1].get_selected_img(), [x2, y2])
+        selected = 1
+        
+    if enemy_list[0].get_character_life_points() > 0:
+        screen.blit(enemy_list[0].img, [x1, y1]) # o outro
+        
     update_screen()
     
     run = True
@@ -137,16 +146,18 @@ def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[
                 pygame.quit()
                 
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT and enemy_list[0].get_character_life_points() > 0:
                     screen.blit(enemy_list[0].get_selected_img(), [x1, y1])
                     selected = 0
-                    screen.blit(enemy_list[1].img, [x2, y2]) # o outro
+                    if enemy_list[1].get_character_life_points() > 0:
+                        screen.blit(enemy_list[1].img, [x2, y2]) # o outro
                     update_screen()
                             
-                elif event.key == pygame.K_LEFT:
+                elif event.key == pygame.K_LEFT and enemy_list[1].get_character_life_points() > 0:
                     screen.blit(enemy_list[1].get_selected_img(), [x2, y2])
                     selected = 1
-                    screen.blit(enemy_list[0].img, [x1, y1]) # o outro
+                    if enemy_list[0].get_character_life_points() > 0:
+                        screen.blit(enemy_list[0].img, [x1, y1]) # o outro
                     update_screen()
                     
                 elif event.key == pygame.K_z:
