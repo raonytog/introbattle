@@ -51,18 +51,42 @@ def draw_menu_options(screen: pygame.surface, character: Character, character_li
         y -= 20
         
         
-def character_movement(character: Character, enemy_list: list[Character], position: list, screen: pygame.surface) -> None:
+def character_movement(character: Character, enemy_list: list, ally_list: list, position: list, screen: pygame.surface) -> None:
     # attack
     if position == [80, 568]:
         enemy = choose_enemy(screen, character, enemy_list)
         enemy.receive_dmg(character.get_character_attack())
         
+    # special
+    elif position == [280, 568]:
+        if character.get_character_name() == 'meele':
+            enemy = choose_enemy(screen, character, enemy_list)
+            character.special(enemy)
+            
+        elif character.get_character_name() == 'mage':
+            enemy = choose_enemy(screen, character, enemy_list)
+            character.special(enemy)
+            
+        elif character.get_character_name() == 'ranged':
+            enemy = choose_enemy(screen, character, enemy_list)
+            character.special(enemy)
+            
+        elif character.get_character_name() == 'summoner':
+            enemy = choose_enemy(screen, character, enemy_list)
+            character.special(enemy)
+            
+        elif character.get_character_name() == 'bard':
+            ally = choose_ally(screen, ally_list, enemy_list)
+            character.special(ally)
         
-    # elif list == [280, 160]:
-    #
-    # elif list == [80, 628]:
-    #
-    # elif list == [80, 568]:
+        
+    # defense
+    # elif position == [80, 628]:
+        
+    # charm (?)
+    # elif position == [280, 628]:
+        
+
         
         
 def enemy_moviment(character: Character, character_list: list[Character], enemy_list: list[Character], screen: pygame.surface) -> None:
@@ -96,34 +120,65 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
                 # seta apontando pra opcao de acao selecionada
                 screen.blit(SELECT_TEXT, [x, y])
                 for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
+                    if event.type == pygame.QUIT:
                             pygame.quit()
                             
-                        # movimento da seta
-                        elif event.type == pygame.KEYDOWN:
-                            if event.key == pygame.K_RIGHT and x == 80:
-                                x += 200
-                                
-                            elif event.key == pygame.K_LEFT and x == 280:
-                                x -= 200
-                                
-                            elif event.key == pygame.K_UP and y == 568+60:
-                                y -= 60
+                    # movimento da seta
+                    elif event.type == pygame.KEYDOWN:
                             
-                            elif event.key == pygame.K_DOWN and y == 568:
-                                y += 60
+                        if event.key == pygame.K_RIGHT and x == 80:
+                            x += 200
+                            
+                        elif event.key == pygame.K_LEFT and x == 280:
+                            x -= 200
+                            
+                        elif event.key == pygame.K_UP and y == 568+60:
+                            y -= 60
+                            
+                        elif event.key == pygame.K_DOWN and y == 568:
+                            y += 60
                                 
-                            elif event.key == pygame.K_z:
-                                character_movement(character, enemy_list, [x, y], screen)
-                                update_screen()
+                        elif event.key == pygame.K_z:
+                            character_movement(character, enemy_list, character_list, [x, y], screen)
+                            update_screen()
                                 
-                                enemy_moviment(character, character_list, enemy_list, screen)
-                                update_screen()
+                            enemy_moviment(character, character_list, enemy_list, screen)
+                            update_screen()
                                 
         update_screen()
         
-# def choose_ally(character_list: list[Character]) -> Character:
+
+def choose_ally(screen: pygame.surface, character_list: list, enemy_list: list) -> Character:
+    seta_y = 250
+    seta_x1, seta_x2, seta_x3  = 120, 300, 450
+    x, y = seta_x1, seta_y
     
+    run = True
+    while run:
+        draw_screen(screen, character_list, enemy_list)
+        screen.blit(SETA, [x, y])
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                
+            elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RIGHT and x < 450:
+                        x += 150
+                            
+                    elif event.key == pygame.K_LEFT and x > 150:
+                        x -= 150
+                                
+                    elif event.key == pygame.K_z:
+                        if x == 120:
+                            return character_list[0]
+                        
+                        elif x == 300:
+                            return character_list[1]
+                            
+                        elif x == 450:
+                            return character_list[2]
+                        
+        update_screen()
     
 
 def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[DukeFisheron, EyeOfCtchulu])-> Character:
@@ -166,5 +221,17 @@ def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[
                 
         # tem que fazer a logica ainda para retornar o inimigo selecionado 
         update_screen()
-                    
-            
+
+def is_player_defeated(character_list: list[Character]) -> bool:
+    for char in character_list:
+        if char.get_character_life_points() > 0:
+            return False
+        
+    return True
+
+def is_player_winner(enemy_list: list[Character]) -> bool:
+    for enemy in enemy_list:
+        if enemy.get_character_life_points() > 0:
+            return False
+        
+    return True

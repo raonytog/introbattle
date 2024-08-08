@@ -27,6 +27,7 @@ class Character(pygame.sprite.Sprite):
         self.speed = speed
         self.attack = attack
         self.name = name
+        self.pos = [0, 0]
         self.img = pygame.image.load(os.path.join('imgs', f'{name}.png'))
         
         if name == 'duke_fishron' or name == 'eye_of_ctchulu':
@@ -71,8 +72,15 @@ class Character(pygame.sprite.Sprite):
     def get_caracter_rect(self) -> pygame.rect:
         return self.rect
     
-    
-    # funcoes de combate
+    # setters
+    def set_character_post(self, position: list[2]) -> None:
+        self.pos = position
+        
+    def give_character_life_points(self, bonus_life: int) -> None:
+        self.life_points += bonus_life
+        if self.life_points > self.max_life_points:
+            self.life_points = self.max_life_points
+        
     def receive_dmg(self, damage: int) -> None:
         self.life_points -= damage * (50/(50 + self.defense))
         if self.life_points < 0:
@@ -83,8 +91,13 @@ class Meele(Character):
     def __init__(self):
         super().__init__(100, 40, 30, 30, 'meele')
         
-    # def special(self):
-    # dano critico
+    # Da um dado critico no inimio. Caso mate, o usuario tambem morre
+    def special(self, enemy: Character):
+        enemy.receive_dmg(4 * self.get_character_attack())
+        if enemy.life_points < 0:
+            enemy.life_points = 0
+            self.life_points = 0
+        
 
 
 class Mage(Character):
@@ -107,16 +120,18 @@ class Summoner(Character):
     def __init__(self):
         super().__init__(100, 5, 40, 150, 'summoner')
         
-    # def special(self):
-    # invoca um pet que causa dpt (dano por turno)
+    # def special(self, ally: Character):
+        
         
 
 class Bard(Character):
     def __init__(self):
         super().__init__(100, 40, 50, 45, 'bard')
         
-    # def special(self):
-    # cura ul aliado
+    # cura 65% da vida do aliado escolhido
+    def special(self, ally: Character):
+        ally.give_character_life_points(ally.get_character_max_life_points() * 0.65)
+        
         
 
 class EyeOfCtchulu(Character):
@@ -142,19 +157,6 @@ class DukeFisheron(Character):
         
     def get_selected_img(self):
         return self.selected
+    
     # def special(self):
     # dano em area atk/3 
-
-def is_player_defeated(character_list: list[Character]) -> bool:
-    for char in character_list:
-        if char.get_character_life_points() > 0:
-            return False
-        
-    return True
-
-def is_player_winner(enemy_list: list[Character]) -> bool:
-    for enemy in enemy_list:
-        if enemy.get_character_life_points() > 0:
-            return False
-        
-    return True
