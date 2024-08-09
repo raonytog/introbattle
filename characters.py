@@ -27,6 +27,7 @@ class Character(pygame.sprite.Sprite):
         self.speed = speed
         self.attack = attack
         self.name = name
+        
         self.pos = [0, 0]
         self.img = pygame.image.load(os.path.join('imgs', f'{name}.png'))
         
@@ -91,9 +92,18 @@ class Character(pygame.sprite.Sprite):
             self.life_points = self.max_life_points
         
     def receive_dmg(self, damage: int) -> None:
-        self.life_points -= damage * (50/(50 + self.defense))
+        # verifica se eh possivel receber dano
+        if self.life_points > 0:
+            self.life_points -= damage * (50/(50 + self.defense))
+            
+        # correcao de vida
         if self.life_points < 0:
             self.life_points = 0
+            
+    # logical
+    def is_character_alive(self) -> bool:
+        if self.life_points <= 0:
+            return True
         
 
 class Meele(Character):
@@ -104,8 +114,10 @@ class Meele(Character):
     def special(self, enemy: Character):
         enemy.receive_dmg(4 * self.get_character_attack())
         if enemy.life_points < 0:
-            enemy.life_points = 0
             self.life_points = 0
+            
+    def defense(self):
+        self.defense = 50
         
 
 
@@ -113,34 +125,54 @@ class Mage(Character):
     def __init__(self):
         super().__init__(100, 30, 50, 50, 'mage') 
         
-    # def special(self):
-    # dano em area com atk/2
-
+    # causa dano em área
+    def special(self, enemy_list: list[Character]):
+        for enemy in enemy_list:
+            enemy.receive_dmg(self.get_character_attack())
+            
+    def defense(self):
+        self.defense = 40
+        
 
 class Ranged(Character):
     def __init__(self):
         super().__init__(100, 10, 100, 100, 'ranged')
         
-    # def special(self):
-    # ataca 2x seguidas
+    # causa um ataque critico e diminui a defesa do inimigo em 25%
+    def special(self, enemy: Character):
+        enemy.receive_dmg(self.get_character_attack()*2)
+        enemy.defense = enemy.get_character_defense() * 0.75
         
+    def defense(self):
+        self.defense = 20
         
 class Summoner(Character):
     def __init__(self):
         super().__init__(100, 5, 40, 150, 'summoner')
-        
-    # def special(self, ally: Character):
-        
-        
+    
+    # cria morcegos que atacam os inimigos
+    def special(self, enemy_list: list[Character]):
+        # ataque dos morcegos
+        for enemy in enemy_list:
+            enemy.receive_dmg(20)
+            
+        # attk do aliado no primeiro inimigo vivo
+        if enemy_list[0].is_character_alive():
+            enemy_list[0].receive_dmg(self.get_character_attack())
+            
+        elif enemy_list[1].is_character_alive():
+            enemy_list[1].receive_dmg(self.get_character_attack())
 
 class Bard(Character):
     def __init__(self):
-        super().__init__(100, 40, 50, 45, 'bard')
+        super().__init__(100, 30, 50, 45, 'bard')
         
     # cura 65% da vida do aliado escolhido
     def special(self, ally: Character):
         ally.give_character_life_points(ally.get_character_max_life_points() * 0.65)
         
+    def defense(self):
+        self.defense = 40
         
 
 class EyeOfCtchulu(Character):
@@ -150,13 +182,8 @@ class EyeOfCtchulu(Character):
         self.selected = pygame.transform.flip(self.selected, False, True)
         self.selected = pygame.transform.rotate(self.selected, 135)
 
-        
     def get_selected_img(self):
         return self.selected
-    
-    # def special(self):
-    # tira um personagem de campo
-        
 
 class DukeFisheron(Character):
     def __init__(self):
@@ -166,6 +193,3 @@ class DukeFisheron(Character):
         
     def get_selected_img(self):
         return self.selected
-    
-    # def special(self):
-    # dano em area atk/3 

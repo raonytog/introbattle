@@ -104,6 +104,7 @@ def enemy_moviment(character: Character, character_list: list[Character], enemy_
 def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_list: list[Character]) -> None:
     run = True
     x, y = 80, HEIGHT-160
+
     while run:
         # Verifica se acabou o jogo
         if is_player_defeated(character_list) or is_player_winner(enemy_list):
@@ -113,6 +114,7 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
         for character in character_list:
             # se o caractere estiver vivo, da a opcao de acao para ele
             if character.get_character_life_points() > 0:
+                print(character.get_character_name())
                 draw_menu_options(screen, character, character_list, enemy_list)
                 pos = [character.get_caracter_pos_x()-40, character.get_caracter_pos_y()-140]
                 screen.blit(SETA, pos)
@@ -140,9 +142,12 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
                         elif event.key == pygame.K_z:
                             character_movement(character, enemy_list, character_list, [x, y], screen)
                             enemy_moviment(character, character_list, enemy_list, screen)
-                                
+                            
+                # event for
+            # if 
+        # char for
         update_screen()
-        
+    # while
 
 def choose_ally(screen: pygame.surface, character_list: list, enemy_list: list) -> Character:
     seta_y = 250
