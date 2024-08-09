@@ -72,6 +72,15 @@ class Character(pygame.sprite.Sprite):
     def get_caracter_rect(self) -> pygame.rect:
         return self.rect
     
+    def get_caracter_pos(self) -> int:
+        return self.pos
+        
+    def get_caracter_pos_x(self) -> int:
+        return self.pos[0]
+        
+    def get_caracter_pos_y(self) -> int:
+        return self.pos[1]
+    
     # setters
     def set_character_post(self, position: list[2]) -> None:
         self.pos = position
@@ -136,7 +145,7 @@ class Bard(Character):
 
 class EyeOfCtchulu(Character):
     def __init__(self):
-        super().__init__(400, 40, 70, 20, 'eye_of_ctchulu')
+        super().__init__(200, 40, 70, 20, 'eye_of_ctchulu')
         self.selected = pygame.image.load(os.path.join('imgs', 'eye_of_ctchulu_selected.png'))
         self.selected = pygame.transform.flip(self.selected, False, True)
         self.selected = pygame.transform.rotate(self.selected, 135)
@@ -151,7 +160,7 @@ class EyeOfCtchulu(Character):
 
 class DukeFisheron(Character):
     def __init__(self):
-        super().__init__(200, 10, 150, 100, 'duke_fishron')
+        super().__init__(200, 10, 150, 20, 'duke_fishron')
         self.selected = pygame.image.load(os.path.join('imgs', 'duke_fishron_selected.png'))
         self.selected = pygame.transform.flip(self.selected, True, False)
         

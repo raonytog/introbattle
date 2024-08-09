@@ -167,6 +167,7 @@ def draw_character_list(screen: pygame.surface, character_list: list[Character])
     for character in character_list:
         if character.get_character_life_points() > 0:
             character.draw_character_position(screen, [x, y])
+            character.set_character_post([x, y])
             x += 150
 
 
@@ -178,9 +179,11 @@ def draw_enemy_list(screen: pygame.surface, enemy_list: list[Character]) -> None
 
     if enemy_list[0].get_character_life_points() > 0:
         enemy_list[0].draw_character_position(screen, duke_pos)
+        enemy_list[0].set_character_post(duke_pos)
         
     if enemy_list[1].get_character_life_points() > 0:
         enemy_list[1].draw_character_position(screen, eye_pos)
+        enemy_list[1].set_character_post(eye_pos)
         
 def draw_win_screen(screen: pygame.surface) -> None:
     screen.blit(WIN_SCREEN, START)

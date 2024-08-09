@@ -32,7 +32,6 @@ def main():
                 pygame.quit()
                 
         combat_loop(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST)
-        update_screen()
         
         # player perdeu
         if is_player_defeated(SELECTED_CHARACTERS_LIST):

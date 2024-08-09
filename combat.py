@@ -17,7 +17,7 @@ DEFENSE_RECT = DEFENSE_TEXT.get_rect()
 SPECIAL_TEXT = FONT.render("Special", True, pygame.Color("YELLOW"))
 SPECIAL_RECT = SPECIAL_TEXT.get_rect()
 
-CHARM_TEXT = FONT.render("Charm", True, pygame.Color("YELLOW"))
+CHARM_TEXT = FONT.render("# # # # #", True, pygame.Color("YELLOW"))
 CHARM_RECT = CHARM_TEXT.get_rect()
 
 def draw_menu_options(screen: pygame.surface, character: Character, character_list: list[Character], enemy_list: list[Character]) -> None:
@@ -82,10 +82,8 @@ def character_movement(character: Character, enemy_list: list, ally_list: list, 
         
     # defense
     # elif position == [80, 628]:
-        
-    # charm (?)
-    # elif position == [280, 628]:
-        
+    
+    
 
         
         
@@ -100,24 +98,26 @@ def enemy_moviment(character: Character, character_list: list[Character], enemy_
                 char.receive_dmg(enemy_list[1].attack)
                 break
                 
-            # ambos inimigos mortos
-            else:
+            else: # both death
                 break
 
 def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_list: list[Character]) -> None:
     run = True
     x, y = 80, HEIGHT-160
     while run:
-        draw_screen(SCREEN, character_list, enemy_list)
-        
+        # Verifica se acabou o jogo
         if is_player_defeated(character_list) or is_player_winner(enemy_list):
             break
         
+        draw_screen(SCREEN, character_list, enemy_list)
         for character in character_list:
+            # se o caractere estiver vivo, da a opcao de acao para ele
             if character.get_character_life_points() > 0:
                 draw_menu_options(screen, character, character_list, enemy_list)
+                pos = [character.get_caracter_pos_x()-40, character.get_caracter_pos_y()-140]
+                screen.blit(SETA, pos)
             
-                # seta apontando pra opcao de acao selecionada
+                # seta da escolha de acao
                 screen.blit(SELECT_TEXT, [x, y])
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -125,7 +125,6 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
                             
                     # movimento da seta
                     elif event.type == pygame.KEYDOWN:
-                            
                         if event.key == pygame.K_RIGHT and x == 80:
                             x += 200
                             
@@ -140,10 +139,7 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
                                 
                         elif event.key == pygame.K_z:
                             character_movement(character, enemy_list, character_list, [x, y], screen)
-                            update_screen()
-                                
                             enemy_moviment(character, character_list, enemy_list, screen)
-                            update_screen()
                                 
         update_screen()
         
@@ -189,11 +185,11 @@ def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[
         screen.blit(enemy_list[1].get_selected_img(), [x2, y2])
         selected = 1
         
-    if enemy_list[0].get_character_life_points() > 0:
-        screen.blit(enemy_list[0].img, [x1, y1]) # o outro
+    elif enemy_list[0].get_character_life_points() > 0:
+        screen.blit(enemy_list[0].get_selected_img(), [x1, y1]) # o outro
+        selected = 0
         
     update_screen()
-    
     run = True
     while run:
         for event in pygame.event.get():
@@ -218,8 +214,6 @@ def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[
                 elif event.key == pygame.K_z:
                     return enemy_list[selected]
 
-                
-        # tem que fazer a logica ainda para retornar o inimigo selecionado 
         update_screen()
 
 def is_player_defeated(character_list: list[Character]) -> bool:
