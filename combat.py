@@ -93,12 +93,6 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
                                     return
                                 
                         update_screen()
-            
-                    # for event 
-                # while not pressed
-            # if char live
-        # main for
-    # main while
 
 def choose_ally(screen: pygame.surface, character_list: list, enemy_list: list) -> Character:
     seta_y = 250
