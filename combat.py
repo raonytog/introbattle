@@ -64,16 +64,14 @@ def character_movement(character: Character, enemy_list: list, ally_list: list, 
             character.special(enemy)
             
         elif character.get_character_name() == 'mage':
-            enemy = choose_enemy(screen, character, enemy_list)
-            character.special(enemy)
+            character.special(enemy_list)
             
         elif character.get_character_name() == 'ranged':
             enemy = choose_enemy(screen, character, enemy_list)
             character.special(enemy)
             
         elif character.get_character_name() == 'summoner':
-            enemy = choose_enemy(screen, character, enemy_list)
-            character.special(enemy)
+            character.special(enemy_list)
             
         elif character.get_character_name() == 'bard':
             ally = choose_ally(screen, ally_list, enemy_list)
@@ -81,12 +79,10 @@ def character_movement(character: Character, enemy_list: list, ally_list: list, 
         
         
     # defense
-    # elif position == [80, 628]:
-    
-    
+    elif position == [80, 628]:
+        character.defense()
+        
 
-        
-        
 def enemy_moviment(character: Character, character_list: list[Character], enemy_list: list[Character], screen: pygame.surface) -> None:
     for char in character_list:
         if char.get_character_life_points() > 0:
