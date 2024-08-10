@@ -111,12 +111,12 @@ class Meele(Character):
         super().__init__(100, 40, 30, 30, 'meele')
         
     # Da um dado critico no inimio. Caso mate, o usuario tambem morre
-    def special(self, enemy: Character):
+    def sp_atk(self, enemy: Character):
         enemy.receive_dmg(4 * self.get_character_attack())
         if enemy.life_points < 0:
             self.life_points = 0
             
-    def defense(self):
+    def sp_def(self):
         self.defense = 50
         
 
@@ -126,11 +126,11 @@ class Mage(Character):
         super().__init__(100, 30, 50, 50, 'mage') 
         
     # causa dano em área
-    def special(self, enemy_list: list[Character]):
+    def sp_atk(self, enemy_list: list[Character]):
         for enemy in enemy_list:
             enemy.receive_dmg(self.get_character_attack())
             
-    def defense(self):
+    def sp_def(self):
         self.defense = 40
         
 
@@ -139,11 +139,11 @@ class Ranged(Character):
         super().__init__(100, 10, 100, 100, 'ranged')
         
     # causa um ataque critico e diminui a defesa do inimigo em 25%
-    def special(self, enemy: Character):
+    def sp_atk(self, enemy: Character):
         enemy.receive_dmg(self.get_character_attack()*2)
         enemy.defense = enemy.get_character_defense() * 0.75
         
-    def defense(self):
+    def sp_def(self):
         self.defense = 20
         
 class Summoner(Character):
@@ -151,7 +151,7 @@ class Summoner(Character):
         super().__init__(100, 5, 40, 150, 'summoner')
     
     # cria morcegos que atacam os inimigos
-    def special(self, enemy_list: list[Character]):
+    def sp_atk(self, enemy_list: list[Character]):
         # ataque dos morcegos
         for enemy in enemy_list:
             enemy.receive_dmg(20)
@@ -162,16 +162,19 @@ class Summoner(Character):
             
         elif enemy_list[1].is_character_alive():
             enemy_list[1].receive_dmg(self.get_character_attack())
+            
+    def sp_def(self):
+        self.defense = 10
 
 class Bard(Character):
     def __init__(self):
         super().__init__(100, 30, 50, 45, 'bard')
         
     # cura 65% da vida do aliado escolhido
-    def special(self, ally: Character):
+    def sp_atk(self, ally: Character):
         ally.give_character_life_points(ally.get_character_max_life_points() * 0.65)
         
-    def defense(self):
+    def sp_def(self):
         self.defense = 40
         
 

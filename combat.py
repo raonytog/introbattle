@@ -61,27 +61,28 @@ def character_movement(character: Character, enemy_list: list, ally_list: list, 
     elif position == [280, 568]:
         if character.get_character_name() == 'meele':
             enemy = choose_enemy(screen, character, enemy_list)
-            character.special(enemy)
+            character.sp_atk(enemy)
             
         elif character.get_character_name() == 'mage':
-            character.special(enemy_list)
+            character.sp_atk(enemy_list)
             
         elif character.get_character_name() == 'ranged':
             enemy = choose_enemy(screen, character, enemy_list)
-            character.special(enemy)
+            character.sp_atk(enemy)
             
         elif character.get_character_name() == 'summoner':
-            character.special(enemy_list)
+            character.sp_atk(enemy_list)
             
         elif character.get_character_name() == 'bard':
             ally = choose_ally(screen, ally_list, enemy_list)
-            character.special(ally)
+            character.sp_atk(ally)
         
         
     # defense
     elif position == [80, 628]:
-        character.defense()
-        
+        print(character.get_character_defense())
+        character.sp_def()
+        print(character.get_character_defense())
 
 def enemy_moviment(character: Character, character_list: list[Character], enemy_list: list[Character], screen: pygame.surface) -> None:
     for char in character_list:

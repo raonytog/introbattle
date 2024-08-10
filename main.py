@@ -11,12 +11,12 @@ CHARACTER_LIST.append(Mage())
 CHARACTER_LIST.append(Ranged())
 CHARACTER_LIST.append(Summoner())
 CHARACTER_LIST.append(Bard())
+SELECTED_CHARACTERS_LIST = pygame.sprite.Group()
 
+# inimigos
 ENEMIES_LIST = list()
 ENEMIES_LIST.append(DukeFisheron())
 ENEMIES_LIST.append(EyeOfCtchulu())
-
-SELECTED_CHARACTERS_LIST = pygame.sprite.Group()
 
 
 def main():
