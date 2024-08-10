@@ -28,6 +28,7 @@ class Character(pygame.sprite.Sprite):
         self.attack = attack
         self.name = name
         
+        self.points = 0
         self.pos = [0, 0]
         self.img = pygame.image.load(os.path.join('imgs', f'{name}.png'))
         
@@ -105,6 +106,16 @@ class Character(pygame.sprite.Sprite):
         if self.life_points <= 0:
             return True
         
+    def inc_point(self) -> None:
+        self.points += 1
+        if self.points > 5:
+            self.points = 5
+            
+    def dec_point(self) -> None:
+        self.points -= 1
+        if self.points < 0:
+            self.points = 0
+        
 
 class Meele(Character):
     def __init__(self):
@@ -172,7 +183,10 @@ class Bard(Character):
         
     # cura 65% da vida do aliado escolhido
     def sp_atk(self, ally: Character):
+        print(ally.get_character_life_points())
         ally.give_character_life_points(ally.get_character_max_life_points() * 0.65)
+        print(ally.get_character_life_points())
+        
         
     def sp_def(self):
         self.defense = 40

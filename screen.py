@@ -48,6 +48,25 @@ SETA = pygame.image.load(os.path.join('imgs', 'arrow_pointer.png'))
 SETA = pygame.transform.rotate(SETA, 136)
 SETA = pygame.transform.scale_by(SETA, 0.35)
 
+MENU = pygame.image.load(os.path.join('imgs', 'menu.png'))
+MENU_RECT = MENU.get_rect()
+
+FONT = pygame.font.Font(None, 40)
+SELECT_TEXT = FONT.render(">", True, pygame.Color("YELLOW"))
+SELECT_RECT = SELECT_TEXT.get_rect()
+
+ATTACK_TEXT = FONT.render("Attack", True, pygame.Color("YELLOW"))
+ATTACK_RECT = ATTACK_TEXT.get_rect()
+
+DEFENSE_TEXT = FONT.render("Defense", True, pygame.Color("YELLOW"))
+DEFENSE_RECT = DEFENSE_TEXT.get_rect()
+
+SPECIAL_TEXT = FONT.render("Special", True, pygame.Color("YELLOW"))
+SPECIAL_RECT = SPECIAL_TEXT.get_rect()
+
+CHARM_TEXT = FONT.render("# # # # #", True, pygame.Color("YELLOW"))
+CHARM_RECT = CHARM_TEXT.get_rect()
+
 
 def draw_start_screen(screen: pygame.surface):
     font = pygame.font.Font(None, 40)
@@ -208,4 +227,41 @@ def draw_lost_screen(screen: pygame.surface) -> None:
     update_screen()
     time.sleep(1.5)
     pygame.quit()
+
+def draw_menu_options(screen: pygame.surface, character: Character, character_list: list[Character], enemy_list: list[Character]) -> None:
+    screen.blit(MENU, MENU_RECT)
+    screen.blit(ATTACK_TEXT, [100, HEIGHT-160])
+    screen.blit(SPECIAL_TEXT, [300, HEIGHT-160])
     
+    screen.blit(DEFENSE_TEXT, [100, HEIGHT-100])
+    screen.blit(CHARM_TEXT, [300, HEIGHT-100])
+    
+    y = 150
+    font = pygame.font.Font(None, 30)
+    
+    # mostra de quem eh o turno
+    font_2 = pygame.font.Font(None, 25)
+    text = font_2.render(f"It's {character.get_character_name()} turn!", True, pygame.Color("YELLOW"))
+    screen.blit(text, [WIDTH-300, HEIGHT-190])
+    
+    # mostra a vida dos herois
+    for char in character_list:
+        text = font.render(f"{char.get_character_name()}: {char.get_character_life_points():.0f}/100", 
+                           True, pygame.Color("YELLOW"))
+        screen.blit(text, [WIDTH-300, HEIGHT-y])
+        y -= 20
+        
+    # mostra a vida dos inimigos
+    for enemy in enemy_list:
+        text = font.render(f"{enemy.get_character_name()}: {enemy.get_character_life_points():.0f}/{enemy.get_character_max_life_points():.0f}", 
+                           True, pygame.Color("YELLOW"))
+        screen.blit(text, [WIDTH-300, HEIGHT-y])
+        y -= 20
+
+def draw_menu_interactions(screen: pygame.surface.Surface, character: Character, character_list: list, enemy_list: list, pos_txt: list[2]) -> None:
+    draw_screen(SCREEN, character_list, enemy_list)
+    pos_seta = [character.get_caracter_pos_x()-40, character.get_caracter_pos_y()-140]
+    
+    draw_menu_options(screen, character, character_list, enemy_list)
+    screen.blit(SETA, pos_seta)
+    screen.blit(SELECT_TEXT, pos_txt)
