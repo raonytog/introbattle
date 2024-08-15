@@ -4,39 +4,43 @@ from points import PointSys
  
 def character_movement(character: Character, enemy_list: list, ally_list: list, position: list, screen: pygame.surface, pontos: PointSys) -> None:
     # attack
-    if position == [80, 568]:
-        pontos.inc_point()
-        enemy = choose_enemy(screen, character, enemy_list)
-        enemy.receive_dmg(character.get_character_attack())
-        
-    # special
-    elif position == [280, 568] and pontos.get_points() >= 3:
-        pontos.dec_point()
-        pontos.dec_point()
-        
-        if character.get_character_name() == 'meele':
+    escolheu = 0
+    while not escolheu:
+        if position == [80, 568]:
+            pontos.inc_point()
             enemy = choose_enemy(screen, character, enemy_list)
-            character.sp_atk(enemy)
+            enemy.receive_dmg(character.get_character_attack())
+            escolheu = 1
             
-        elif character.get_character_name() == 'mage':
-            character.sp_atk(enemy_list)
+        # special
+        elif position == [280, 568] and pontos.get_points() >= 3:
+            pontos.dec_point()
+            pontos.dec_point()
+            escolheu = 1
             
-        elif character.get_character_name() == 'ranged':
-            enemy = choose_enemy(screen, character, enemy_list)
-            character.sp_atk(enemy)
+            if character.get_character_name() == 'meele':
+                enemy = choose_enemy(screen, character, enemy_list)
+                character.sp_atk(enemy)
+                
+            elif character.get_character_name() == 'mage':
+                character.sp_atk(enemy_list)
+                
+            elif character.get_character_name() == 'ranged':
+                enemy = choose_enemy(screen, character, enemy_list)
+                character.sp_atk(enemy)
+                
+            elif character.get_character_name() == 'summoner':
+                character.sp_atk(enemy_list)
+                
+            elif character.get_character_name() == 'bard':
+                ally = choose_ally(screen, ally_list, enemy_list)
+                character.sp_atk(ally)
             
-        elif character.get_character_name() == 'summoner':
-            character.sp_atk(enemy_list)
-            
-        elif character.get_character_name() == 'bard':
-            ally = choose_ally(screen, ally_list, enemy_list)
-            character.sp_atk(ally)
-        
-        
-    # defense
-    elif position == [80, 628] and pontos.get_points() > 2:
-        pontos.dec_point()
-        character.sp_def()
+        # defense
+        elif position == [80, 628] and pontos.get_points() >= 2:
+            pontos.dec_point()
+            character.sp_def()
+            escolheu = 1
 
 def enemy_moviment(character: Character, character_list: list[Character], enemy_list: list[Character], screen: pygame.surface) -> None:
     for char in character_list:
