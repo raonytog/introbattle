@@ -1,7 +1,9 @@
 from pygame import *
 from characters import *
-import time
+from combat import *
+from sys import PointSys
 from random import randint
+import time
 
 
 pygame.init()
@@ -63,10 +65,6 @@ DEFENSE_RECT = DEFENSE_TEXT.get_rect()
 
 SPECIAL_TEXT = FONT.render("Special", True, pygame.Color("YELLOW"))
 SPECIAL_RECT = SPECIAL_TEXT.get_rect()
-
-CHARM_TEXT = FONT.render("# # # # #", True, pygame.Color("YELLOW"))
-CHARM_RECT = CHARM_TEXT.get_rect()
-
 
 def draw_start_screen(screen: pygame.surface):
     font = pygame.font.Font(None, 40)
@@ -228,13 +226,16 @@ def draw_lost_screen(screen: pygame.surface) -> None:
     time.sleep(1.5)
     pygame.quit()
 
-def draw_menu_options(screen: pygame.surface, character: Character, character_list: list[Character], enemy_list: list[Character]) -> None:
+def draw_menu_options(screen: pygame.surface, character: Character, character_list: list[Character], enemy_list: list[Character], pontos: PointSys) -> None:
     screen.blit(MENU, MENU_RECT)
     screen.blit(ATTACK_TEXT, [100, HEIGHT-160])
     screen.blit(SPECIAL_TEXT, [300, HEIGHT-160])
     
     screen.blit(DEFENSE_TEXT, [100, HEIGHT-100])
-    screen.blit(CHARM_TEXT, [300, HEIGHT-100])
+    
+    POINTS_TXT = FONT.render(f"POINTS: {pontos.get_points()}", True, pygame.Color("YELLOW"))
+    POINTS_RECT = POINTS_TXT.get_rect()
+    screen.blit(POINTS_TXT, [300, HEIGHT-100])
     
     y = 150
     font = pygame.font.Font(None, 30)
@@ -258,10 +259,10 @@ def draw_menu_options(screen: pygame.surface, character: Character, character_li
         screen.blit(text, [WIDTH-300, HEIGHT-y])
         y -= 20
 
-def draw_menu_interactions(screen: pygame.surface.Surface, character: Character, character_list: list, enemy_list: list, pos_txt: list[2]) -> None:
+def draw_menu_interactions(screen: pygame.surface.Surface, character: Character, character_list: list, enemy_list: list, pos_txt: list[2], pontos: PointSys) -> None:
     draw_screen(SCREEN, character_list, enemy_list)
     pos_seta = [character.get_caracter_pos_x()-40, character.get_caracter_pos_y()-140]
     
-    draw_menu_options(screen, character, character_list, enemy_list)
+    draw_menu_options(screen, character, character_list, enemy_list, pontos)
     screen.blit(SETA, pos_seta)
     screen.blit(SELECT_TEXT, pos_txt)

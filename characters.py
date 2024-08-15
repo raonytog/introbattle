@@ -28,7 +28,6 @@ class Character(pygame.sprite.Sprite):
         self.attack = attack
         self.name = name
         
-        self.points = 0
         self.pos = [0, 0]
         self.img = pygame.image.load(os.path.join('imgs', f'{name}.png'))
         
@@ -105,17 +104,6 @@ class Character(pygame.sprite.Sprite):
     def is_character_alive(self) -> bool:
         if self.life_points <= 0:
             return True
-        
-    def inc_point(self) -> None:
-        self.points += 1
-        if self.points > 5:
-            self.points = 5
-            
-    def dec_point(self) -> None:
-        self.points -= 1
-        if self.points < 0:
-            self.points = 0
-        
 
 class Meele(Character):
     def __init__(self):

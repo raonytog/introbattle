@@ -1,8 +1,11 @@
 from characters import *
 from screen import *
 from combat import *
+from sys import PointSys
+pontos = PointSys()
 
 pygame.init()
+
 
 sound_bg = pygame.mixer.Sound('lofi.mp3')
 sound_bg.set_volume(0.05)
@@ -21,7 +24,6 @@ ENEMIES_LIST = list()
 ENEMIES_LIST.append(DukeFisheron())
 ENEMIES_LIST.append(EyeOfCtchulu())
 
-
 def main():
     sound_bg.play()
     draw_start_screen(SCREEN)
@@ -36,7 +38,7 @@ def main():
                 pygame.quit()
         
         # game loop 
-        combat_loop(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST)
+        combat_loop(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST, pontos)
         # player perdeu
         if is_player_defeated(SELECTED_CHARACTERS_LIST):
             draw_lost_screen(SCREEN)

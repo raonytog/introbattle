@@ -1,5 +1,7 @@
 from characters import *
 from screen import *
+from sys import PointSys
+
  
 def character_movement(character: Character, enemy_list: list, ally_list: list, position: list, screen: pygame.surface) -> None:
     # attack
@@ -11,21 +13,21 @@ def character_movement(character: Character, enemy_list: list, ally_list: list, 
     elif position == [280, 568]:
         if character.get_character_name() == 'meele':
             enemy = choose_enemy(screen, character, enemy_list)
-            character.sp_atk(enemy)
+            Meele(character).sp_atk(enemy)
             
         elif character.get_character_name() == 'mage':
-            character.sp_atk(enemy_list)
+            Mage(character).sp_atk(enemy_list)
             
         elif character.get_character_name() == 'ranged':
             enemy = choose_enemy(screen, character, enemy_list)
-            character.sp_atk(enemy)
+            Ranged(character).sp_atk(enemy)
             
         elif character.get_character_name() == 'summoner':
-            character.sp_atk(enemy_list)
+            Summoner(character).sp_atk(enemy_list)
             
         elif character.get_character_name() == 'bard':
             ally = choose_ally(screen, ally_list, enemy_list)
-            character.sp_atk(ally)
+            Bard(character).sp_atk(ally)
         
         
     # defense
@@ -46,7 +48,7 @@ def enemy_moviment(character: Character, character_list: list[Character], enemy_
             else: # both death
                 break
 
-def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_list: list[Character]) -> None:
+def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_list: list[Character], pontos: PointSys) -> None:
     run = True
     x, y = 80, HEIGHT-160
 
@@ -55,7 +57,7 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
             # se o caractere estiver vivo, da a opcao de acao para ele
             if character.get_character_life_points() > 0:
                 print(character.get_character_name())
-                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y])
+                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
                 
                 pressed_z = False
                 while not pressed_z:
@@ -108,21 +110,21 @@ def choose_ally(screen: pygame.surface, character_list: list, enemy_list: list) 
                 pygame.quit()
                 
             elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RIGHT and x < 450:
-                        x += 150
-                            
-                    elif event.key == pygame.K_LEFT and x > 150:
-                        x -= 150
-                                
-                    elif event.key == pygame.K_z:
-                        if x == 120:
-                            return character_list[0]
+                if event.key == pygame.K_RIGHT and x < 450:
+                    x += 150
                         
-                        elif x == 300:
-                            return character_list[1]
+                elif event.key == pygame.K_LEFT and x > 150:
+                    x -= 150
                             
-                        elif x == 450:
-                            return character_list[2]
+                elif event.key == pygame.K_z:
+                    if x == 120:
+                        return character_list[0]
+                    
+                    elif x == 300:
+                        return character_list[1]
+                        
+                    elif x == 450:
+                        return character_list[2]
                         
         update_screen()
     
