@@ -1,37 +1,41 @@
 from characters import *
 from screen import *
-from sys import PointSys
-
+from points import PointSys
  
-def character_movement(character: Character, enemy_list: list, ally_list: list, position: list, screen: pygame.surface) -> None:
+def character_movement(character: Character, enemy_list: list, ally_list: list, position: list, screen: pygame.surface, pontos: PointSys) -> None:
     # attack
     if position == [80, 568]:
+        pontos.inc_point()
         enemy = choose_enemy(screen, character, enemy_list)
         enemy.receive_dmg(character.get_character_attack())
         
     # special
-    elif position == [280, 568]:
+    elif position == [280, 568] and pontos.get_points() >= 3:
+        pontos.dec_point()
+        pontos.dec_point()
+        
         if character.get_character_name() == 'meele':
             enemy = choose_enemy(screen, character, enemy_list)
-            Meele(character).sp_atk(enemy)
+            character.sp_atk(enemy)
             
         elif character.get_character_name() == 'mage':
-            Mage(character).sp_atk(enemy_list)
+            character.sp_atk(enemy_list)
             
         elif character.get_character_name() == 'ranged':
             enemy = choose_enemy(screen, character, enemy_list)
-            Ranged(character).sp_atk(enemy)
+            character.sp_atk(enemy)
             
         elif character.get_character_name() == 'summoner':
-            Summoner(character).sp_atk(enemy_list)
+            character.sp_atk(enemy_list)
             
         elif character.get_character_name() == 'bard':
             ally = choose_ally(screen, ally_list, enemy_list)
-            Bard(character).sp_atk(ally)
+            character.sp_atk(ally)
         
         
     # defense
-    elif position == [80, 628]:
+    elif position == [80, 628] and pontos.get_points() > 2:
+        pontos.dec_point()
         character.sp_def()
 
 def enemy_moviment(character: Character, character_list: list[Character], enemy_list: list[Character], screen: pygame.surface) -> None:
@@ -70,22 +74,22 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
                         elif event.type == pygame.KEYDOWN:
                             if event.key == pygame.K_RIGHT and x == 80:
                                 x += 200
-                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y])
+                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
                                 
                             elif event.key == pygame.K_LEFT and x == 280:
                                 x -= 200
-                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y])
+                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
                                 
                             elif event.key == pygame.K_UP and y == 568+60:
                                 y -= 60
-                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y])
+                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
                                 
                             elif event.key == pygame.K_DOWN and y == 568:
                                 y += 60
-                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y])
+                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
                                     
                             elif event.key == pygame.K_z:
-                                character_movement(character, enemy_list, character_list, [x, y], screen)
+                                character_movement(character, enemy_list, character_list, [x, y], screen, pontos)
                                 enemy_moviment(character, character_list, enemy_list, screen)
                                 pressed_z = True
                                 

@@ -1,8 +1,6 @@
 from pygame import *
 from characters import *
-from combat import *
-from sys import PointSys
-from random import randint
+from points import PointSys
 import time
 
 
@@ -44,7 +42,6 @@ INTROBATTLE_RECT.center = (WIDTH/2, 100)
 
 SELECTION_BANNER = pygame.image.load(os.path.join('imgs', 'red_banner.png'))
 SELECTION_BANNER = pygame.transform.scale_by(SELECTION_BANNER, 6)
-SELECTION_BANNER_RECT = SELECTION_BANNER.get_rect()
 
 SETA = pygame.image.load(os.path.join('imgs', 'arrow_pointer.png'))
 SETA = pygame.transform.rotate(SETA, 136)
@@ -55,16 +52,9 @@ MENU_RECT = MENU.get_rect()
 
 FONT = pygame.font.Font(None, 40)
 SELECT_TEXT = FONT.render(">", True, pygame.Color("YELLOW"))
-SELECT_RECT = SELECT_TEXT.get_rect()
-
 ATTACK_TEXT = FONT.render("Attack", True, pygame.Color("YELLOW"))
-ATTACK_RECT = ATTACK_TEXT.get_rect()
-
 DEFENSE_TEXT = FONT.render("Defense", True, pygame.Color("YELLOW"))
-DEFENSE_RECT = DEFENSE_TEXT.get_rect()
-
 SPECIAL_TEXT = FONT.render("Special", True, pygame.Color("YELLOW"))
-SPECIAL_RECT = SPECIAL_TEXT.get_rect()
 
 def draw_start_screen(screen: pygame.surface):
     font = pygame.font.Font(None, 40)
@@ -233,9 +223,8 @@ def draw_menu_options(screen: pygame.surface, character: Character, character_li
     
     screen.blit(DEFENSE_TEXT, [100, HEIGHT-100])
     
-    POINTS_TXT = FONT.render(f"POINTS: {pontos.get_points()}", True, pygame.Color("YELLOW"))
-    POINTS_RECT = POINTS_TXT.get_rect()
-    screen.blit(POINTS_TXT, [300, HEIGHT-100])
+    POINT_TEXT = FONT.render(f"Points: {pontos.get_points()}", True, pygame.Color("YELLOW"))
+    screen.blit(POINT_TEXT, [300, HEIGHT-100])
     
     y = 150
     font = pygame.font.Font(None, 30)

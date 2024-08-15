@@ -1,28 +1,29 @@
-from characters import *
+import characters
 from screen import *
 from combat import *
-from sys import PointSys
+from points import PointSys
+
 pontos = PointSys()
 
 pygame.init()
-
 
 sound_bg = pygame.mixer.Sound('lofi.mp3')
 sound_bg.set_volume(0.05)
 
 # personagens
 CHARACTER_LIST = list()
-CHARACTER_LIST.append(Meele())
-CHARACTER_LIST.append(Mage())
-CHARACTER_LIST.append(Ranged())
-CHARACTER_LIST.append(Summoner())
-CHARACTER_LIST.append(Bard())
+CHARACTER_LIST.append(characters.Meele())
+CHARACTER_LIST.append(characters.Mage())
+CHARACTER_LIST.append(characters.Ranged())
+CHARACTER_LIST.append(characters.Summoner())
+CHARACTER_LIST.append(characters.Bard())
 SELECTED_CHARACTERS_LIST = pygame.sprite.Group()
 
 # inimigos
 ENEMIES_LIST = list()
-ENEMIES_LIST.append(DukeFisheron())
-ENEMIES_LIST.append(EyeOfCtchulu())
+ENEMIES_LIST.append(characters.DukeFisheron())
+ENEMIES_LIST.append(characters.EyeOfCtchulu())
+
 
 def main():
     sound_bg.play()
@@ -39,6 +40,7 @@ def main():
         
         # game loop 
         combat_loop(SCREEN, SELECTED_CHARACTERS_LIST, ENEMIES_LIST, pontos)
+        
         # player perdeu
         if is_player_defeated(SELECTED_CHARACTERS_LIST):
             draw_lost_screen(SCREEN)
@@ -53,6 +55,7 @@ def main():
     # fim do while
     
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()
