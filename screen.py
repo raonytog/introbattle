@@ -56,27 +56,47 @@ ATTACK_TEXT = FONT.render("Attack", True, pygame.Color("YELLOW"))
 DEFENSE_TEXT = FONT.render("Defense", True, pygame.Color("YELLOW"))
 SPECIAL_TEXT = FONT.render("Special", True, pygame.Color("YELLOW"))
 
+def select_sound():
+    sound_bg = pygame.mixer.Sound('assets/select.mp3')
+    sound_bg.set_volume(0.1)
+    sound_bg.play()
+
 def draw_start_screen(screen: pygame.surface):
-    font = pygame.font.Font(None, 40)
-    text = font.render("Let's get start!", True, pygame.Color("YELLOW"))
+    font = pygame.font.Font('assets/Andy.ttf', 30)
+    text = font.render("PRESS ANY KEY TO GET START!", True, pygame.Color("yellow"))
     text_rect = text.get_rect(center=(WIDTH/2, 200))
+    
     
     screen.blit(START_BACKGROUND, START)
     screen.blit(INTROBATTLE, INTROBATTLE_RECT)
     screen.blit(text, text_rect)
     update_screen()
-    time.sleep(1.5)
+    
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = True
+                pygame.quit()
+                
+            elif event.type == pygame.KEYDOWN:
+                select_sound()
+                run = False
 
 
 def draw_character_selection(screen: pygame.surface, character_list: list):
+    font = pygame.font.Font('assets/Andy.ttf', 30)
+    text = font.render("PRESS <, > or ENTER TO SELECT", True, pygame.Color("yellow"))
+    text_rect = text.get_rect(center=(WIDTH/2, 200))
+    
     selected_characters = list()
-    x, y = 117, 260
-
     banner_positions = list()
+    x, y = 117, 260
 
     run = True
     while run:
         screen.blit(BACKGROUND, START)
+        screen.blit(text, text_rect)
 
         # imprime os banners ativos
         for banner in banner_positions:
@@ -94,6 +114,8 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
                 
             # movimento da seta
             elif event.type == pygame.KEYDOWN:
+                select_sound()
+                
                 if event.key == pygame.K_RIGHT and x+150 <= 800:
                     x += 150
                     

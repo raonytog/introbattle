@@ -7,8 +7,8 @@ pontos = PointSys()
 
 pygame.init()
 
-sound_bg = pygame.mixer.Sound('lofi.mp3')
-sound_bg.set_volume(0.05)
+sound_bg = pygame.mixer.Sound('assets/terraria_day.mp3')
+sound_bg.set_volume(0.03)
 
 # personagens
 CHARACTER_LIST = list()

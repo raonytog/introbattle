@@ -114,6 +114,8 @@ def choose_ally(screen: pygame.surface, character_list: list, enemy_list: list) 
         draw_screen(screen, character_list, enemy_list)
         screen.blit(SETA, [x, y])
         for event in pygame.event.get():
+            select_sound()
+            
             if event.type == pygame.QUIT:
                 pygame.quit()
                 
@@ -157,6 +159,8 @@ def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[
                 pygame.quit()
                 
             elif event.type == pygame.KEYDOWN:
+                select_sound()
+                
                 if event.key == pygame.K_RIGHT and enemy_list[0].get_character_life_points() > 0:
                     screen.blit(enemy_list[0].get_selected_img(), [x1, y1])
                     selected = 0
