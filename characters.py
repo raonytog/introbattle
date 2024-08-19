@@ -110,7 +110,7 @@ class Meele(Character):
         super().__init__(100, 40, 30, 30, 'meele')
         
     # Da um dado critico no inimio. Caso mate, o usuario tambem morre
-    def sp_atk(self, enemy: Character):
+    def sp_atk(self, enemy: Character, screen, enemy_list, ally_list):
         enemy.receive_dmg(4 * self.get_character_attack())
         if enemy.life_points < 0:
             self.life_points = 0
