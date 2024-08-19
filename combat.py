@@ -20,21 +20,27 @@ def character_movement(character: Character, enemy_list: list, ally_list: list, 
             
             if character.get_character_name() == 'meele':
                 enemy = choose_enemy(screen, character, enemy_list)
-                character.sp_atk(enemy)
+                character.sp_atk(enemy, screen, enemy_list, ally_list)
+                sp_animation(character, enemy, screen, ally_list, enemy_list)
                 
             elif character.get_character_name() == 'mage':
                 character.sp_atk(enemy_list)
+                sp_animation(character, enemy, screen, ally_list, enemy_list)
+                
                 
             elif character.get_character_name() == 'ranged':
                 enemy = choose_enemy(screen, character, enemy_list)
                 character.sp_atk(enemy)
+                sp_animation(character, enemy, screen, ally_list, enemy_list)
                 
             elif character.get_character_name() == 'summoner':
                 character.sp_atk(enemy_list)
+                sp_animation(character, enemy, screen, ally_list, enemy_list)
                 
             elif character.get_character_name() == 'bard':
                 ally = choose_ally(screen, ally_list, enemy_list)
                 character.sp_atk(ally)
+                sp_animation(character, ally, screen, ally_list, enemy_list)
             
         # defense
         elif position == [80, 628] and pontos.get_points() >= 2:
@@ -64,7 +70,6 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
         for character in character_list:
             # se o caractere estiver vivo, da a opcao de acao para ele
             if character.get_character_life_points() > 0:
-                print(character.get_character_name())
                 draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
                 
                 pressed_z = False
@@ -141,7 +146,7 @@ def choose_ally(screen: pygame.surface, character_list: list, enemy_list: list) 
 
 def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[DukeFisheron, EyeOfCtchulu])-> Character:
     x1, y1 = WIDTH-250, 230
-    x2, y2 = x1-250, y1-250
+    x2, y2 = x1-250, y1-230
     
     if enemy_list[1].get_character_life_points() > 0:
         screen.blit(enemy_list[1].get_selected_img(), [x2, y2])

@@ -52,9 +52,13 @@ MENU_RECT = MENU.get_rect()
 
 FONT = pygame.font.Font(None, 40)
 SELECT_TEXT = FONT.render(">", True, pygame.Color("YELLOW"))
-ATTACK_TEXT = FONT.render("Attack", True, pygame.Color("YELLOW"))
-DEFENSE_TEXT = FONT.render("Defense", True, pygame.Color("YELLOW"))
-SPECIAL_TEXT = FONT.render("Special", True, pygame.Color("YELLOW"))
+ATTACK_TEXT = FONT.render("Attack", True, pygame.Color("WHITE"))
+DEFENSE_TEXT = FONT.render("Defense", True, pygame.Color("WHITE"))
+SPECIAL_TEXT = FONT.render("Special", True, pygame.Color("WHITE"))
+
+BALL = pygame.image.load('imgs/Zenith.png')
+BALL = pygame.transform.scale_by(BALL, 0.3)
+BALL = pygame.transform.rotate(BALL, 135+90+180)
 
 def select_sound():
     sound_bg = pygame.mixer.Sound('assets/select.mp3')
@@ -204,7 +208,7 @@ def draw_enemy_list(screen: pygame.surface, enemy_list: list[Character]) -> None
     x, y = WIDTH-250, 230
 
     duke_pos = [x, y]
-    eye_pos = [x-250, y-250]
+    eye_pos = [x-250, y-230]
 
     if enemy_list[0].get_character_life_points() > 0:
         enemy_list[0].draw_character_position(screen, duke_pos)
@@ -217,25 +221,25 @@ def draw_enemy_list(screen: pygame.surface, enemy_list: list[Character]) -> None
 def draw_win_screen(screen: pygame.surface) -> None:
     screen.blit(WIN_SCREEN, START)
     
-    font = pygame.font.Font(None, 40)
+    font = pygame.font.Font('assets/Andy.ttf', 40)
     text = font.render("Congrats! You've winned!", True, pygame.Color("YELLOW"))
     text_rect = text.get_rect(center=(WIDTH/2, 200))
     screen.blit(text, text_rect)
     
     update_screen()
-    time.sleep(1.5)
+    time.sleep(3)
     pygame.quit()
     
 def draw_lost_screen(screen: pygame.surface) -> None:
     screen.blit(LOST_SCREEN, START)
     
-    font = pygame.font.Font(None, 40)
+    font = pygame.font.Font('assets/Andy.ttf', 40)
     text = font.render("You've lost!", True, pygame.Color("YELLOW"))
     text_rect = text.get_rect(center=(WIDTH/2, 200))
     screen.blit(text, text_rect)
     
     update_screen()
-    time.sleep(1.5)
+    time.sleep(3)
     pygame.quit()
 
 def draw_menu_options(screen: pygame.surface, character: Character, character_list: list[Character], enemy_list: list[Character], pontos: PointSys) -> None:
@@ -259,14 +263,14 @@ def draw_menu_options(screen: pygame.surface, character: Character, character_li
     # mostra a vida dos herois
     for char in character_list:
         text = font.render(f"{char.get_character_name()}: {char.get_character_life_points():.0f}/100", 
-                           True, pygame.Color("YELLOW"))
+                           True, pygame.Color("WHITE"))
         screen.blit(text, [WIDTH-300, HEIGHT-y])
         y -= 20
         
     # mostra a vida dos inimigos
     for enemy in enemy_list:
         text = font.render(f"{enemy.get_character_name()}: {enemy.get_character_life_points():.0f}/{enemy.get_character_max_life_points():.0f}", 
-                           True, pygame.Color("YELLOW"))
+                           True, pygame.Color("WHITE"))
         screen.blit(text, [WIDTH-300, HEIGHT-y])
         y -= 20
 
@@ -277,3 +281,15 @@ def draw_menu_interactions(screen: pygame.surface.Surface, character: Character,
     draw_menu_options(screen, character, character_list, enemy_list, pontos)
     screen.blit(SETA, pos_seta)
     screen.blit(SELECT_TEXT, pos_txt)
+    
+def sp_animation(character: Character, enemy: Character, screen, ally_list: list[Character], enemy_list: list[Character]):
+    x = enemy.get_caracter_pos_x()
+    y = HEIGHT
+    if character.get_character_name() == 'meele':
+        while y != 0:
+            draw_screen(screen, ally_list, enemy_list)
+            y -= 26
+                
+            screen.blit(BALL, [x, y])
+            update_screen()
+            
