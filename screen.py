@@ -90,7 +90,7 @@ def draw_start_screen(screen: pygame.surface):
 
 def draw_character_selection(screen: pygame.surface, character_list: list):
     font = pygame.font.Font('assets/Andy.ttf', 30)
-    text = font.render("PRESS <, > or ENTER TO SELECT", True, pygame.Color("yellow"))
+    text = font.render("PRESS <, > or Z TO SELECT", True, pygame.Color("yellow"))
     text_rect = text.get_rect(center=(WIDTH/2, 200))
     
     selected_characters = list()
@@ -118,7 +118,7 @@ def draw_character_selection(screen: pygame.surface, character_list: list):
                 
             # movimento da seta
             elif event.type == pygame.KEYDOWN:
-                select_sound()
+                # select_sound()
                 
                 if event.key == pygame.K_RIGHT and x+150 <= 800:
                     x += 150
