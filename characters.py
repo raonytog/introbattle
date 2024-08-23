@@ -102,12 +102,14 @@ class Character(pygame.sprite.Sprite):
             
     # logical
     def is_character_alive(self) -> bool:
-        if self.life_points <= 0:
+        if self.life_points >= 0:
             return True
+        
+        return False
 
 class Meele(Character):
     def __init__(self):
-        super().__init__(100, 40, 30, 30, 'meele')
+        super().__init__(100, 40, 30, 40, 'meele')
         
     # Da um dado critico no inimio. Caso mate, o usuario tambem morre
     def sp_atk(self, enemy: Character, screen, enemy_list, ally_list):
@@ -117,8 +119,6 @@ class Meele(Character):
             
     def sp_def(self):
         self.defense = 50
-        
-
 
 class Mage(Character):
     def __init__(self):
@@ -147,7 +147,7 @@ class Ranged(Character):
         
 class Summoner(Character):
     def __init__(self):
-        super().__init__(100, 5, 40, 150, 'summoner')
+        super().__init__(100, 5, 40, 100, 'summoner')
     
     # cria morcegos que atacam os inimigos
     def sp_atk(self, enemy_list: list[Character]):

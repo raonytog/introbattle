@@ -1,7 +1,7 @@
 from characters import *
 from screen import *
 from points import PointSys
- 
+
 def character_movement(character: Character, enemy_list: list, ally_list: list, position: list, screen: pygame.surface, pontos: PointSys) -> None:
     # attack
     escolheu = 0
@@ -25,8 +25,7 @@ def character_movement(character: Character, enemy_list: list, ally_list: list, 
                 
             elif character.get_character_name() == 'mage':
                 character.sp_atk(enemy_list)
-                sp_animation(character, enemy, screen, ally_list, enemy_list)
-                
+                sp_animation(character, enemy_list[0], screen, ally_list, enemy_list)
                 
             elif character.get_character_name() == 'ranged':
                 enemy = choose_enemy(screen, character, enemy_list)
@@ -35,7 +34,7 @@ def character_movement(character: Character, enemy_list: list, ally_list: list, 
                 
             elif character.get_character_name() == 'summoner':
                 character.sp_atk(enemy_list)
-                sp_animation(character, enemy, screen, ally_list, enemy_list)
+                sp_animation(character, enemy_list[0], screen, ally_list, enemy_list)
                 
             elif character.get_character_name() == 'bard':
                 ally = choose_ally(screen, ally_list, enemy_list)
@@ -46,6 +45,12 @@ def character_movement(character: Character, enemy_list: list, ally_list: list, 
         elif position == [80, 628] and pontos.get_points() >= 2:
             pontos.dec_point()
             character.sp_def()
+            escolheu = 1
+            
+        else:
+            pontos.inc_point()
+            enemy = choose_enemy(screen, character, enemy_list)
+            enemy.receive_dmg(character.get_character_attack())
             escolheu = 1
 
 def enemy_moviment(character: Character, character_list: list[Character], enemy_list: list[Character], screen: pygame.surface) -> None:
@@ -81,7 +86,8 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
                                 
                         # movimento da seta
                         elif event.type == pygame.KEYDOWN:
-                            if event.key == pygame.K_RIGHT and x == 80:
+                            
+                            if event.key == pygame.K_RIGHT and x == 80 and y != 628:
                                 x += 200
                                 draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
                                 
@@ -93,7 +99,7 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
                                 y -= 60
                                 draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
                                 
-                            elif event.key == pygame.K_DOWN and y == 568:
+                            elif event.key == pygame.K_DOWN and y == 568 and x != 280: 
                                 y += 60
                                 draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
                                     
@@ -119,7 +125,7 @@ def choose_ally(screen: pygame.surface, character_list: list, enemy_list: list) 
         draw_screen(screen, character_list, enemy_list)
         screen.blit(SETA, [x, y])
         for event in pygame.event.get():
-            select_sound()
+            play_sound('assets/select.mp3', 0.1)
             
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -142,7 +148,6 @@ def choose_ally(screen: pygame.surface, character_list: list, enemy_list: list) 
                         return character_list[2]
                         
         update_screen()
-    
 
 def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[DukeFisheron, EyeOfCtchulu])-> Character:
     x1, y1 = WIDTH-250, 230
@@ -164,7 +169,7 @@ def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[
                 pygame.quit()
                 
             elif event.type == pygame.KEYDOWN:
-                select_sound()
+                play_sound('assets/select.mp3', 0.1)
                 
                 if event.key == pygame.K_RIGHT and enemy_list[0].get_character_life_points() > 0:
                     screen.blit(enemy_list[0].get_selected_img(), [x1, y1])
@@ -186,6 +191,14 @@ def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[
         update_screen()
 
 def is_player_defeated(character_list: list[Character]) -> bool:
+    """Verifica se o jogador foi derrotado, com todos os aliados derrotados
+
+    Args:
+        character_list (list[Character]): Lista de aliados
+
+    Returns:
+        bool: Se o jogador for derrotado, True. Caso contrário, False
+    """
     for char in character_list:
         if char.get_character_life_points() > 0:
             return False
@@ -193,6 +206,14 @@ def is_player_defeated(character_list: list[Character]) -> bool:
     return True
 
 def is_player_winner(enemy_list: list[Character]) -> bool:
+    """Verifica se o jogador ganhou, derrotando todos os inimigos
+
+    Args:
+        enemy_list (list[Character]): Lista de inimigos
+
+    Returns:
+        bool: Se há inimigos vivos, False. Caso contrário, True
+    """
     for enemy in enemy_list:
         if enemy.get_character_life_points() > 0:
             return False
