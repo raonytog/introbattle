@@ -90,6 +90,13 @@ class Character(pygame.sprite.Sprite):
     def get_caracter_pos_y(self) -> int:
         return self.pos[1]
     
+    def get_character_desc(self) -> str:
+        return self.desc
+        
+    def get_character_sp_desc(self) -> str:
+        return self.special_desc
+        
+    
     # setters
     def set_character_post(self, position: list[2]) -> None:
         self.pos = position
@@ -134,9 +141,9 @@ class Meele(Character):
 
 class Mage(Character):
     def __init__(self):
-        super().__init__(100, 30, 50, 50, 'mage')
-        self.desc = "Um velho sábio do bosque"
-        self.special_desc = "Dano em área"
+        super().__init__(100, 30, 30, 60, 'mage')
+        self.desc = "Um velho sabio do bosque"
+        self.special_desc = "Dano em area"
         
     # causa dano em área
     def sp_atk(self, enemy_list: list[Character]):
@@ -149,9 +156,9 @@ class Mage(Character):
 
 class Ranged(Character):
     def __init__(self):
-        super().__init__(100, 10, 100, 100, 'ranged')
+        super().__init__(100, 20, 100, 40, 'ranged')
         self.desc = "Um metido arqueiro e escritor"
-        self.special_desc = "Reduz a defesa ao inimigo, causando dano crítico"
+        self.special_desc = "Reduz a defesa ao inimigo, causando dano critico"
         
     # causa um ataque critico e diminui a defesa do inimigo em 25%
 
@@ -164,7 +171,7 @@ class Ranged(Character):
         
 class Summoner(Character):
     def __init__(self):
-        super().__init__(100, 5, 40, 100, 'summoner')
+        super().__init__(100, 1, 40, 100, 'summoner')
         self.desc = "?"
         self.special_desc = "Amigos morcegos atacam os inimigos"
     
@@ -187,7 +194,7 @@ class Summoner(Character):
 class Bard(Character):
     def __init__(self):
         super().__init__(100, 30, 50, 45, 'bard')
-        self.desc = "Uma princesa que adora músicas"
+        self.desc = "Uma princesa que adora musicas"
         self.special_desc = "Cura seus aliados"
         
     # cura 65% da vida do aliado escolhido
@@ -195,7 +202,6 @@ class Bard(Character):
         print(ally.get_character_life_points())
         ally.give_character_life_points(ally.get_character_max_life_points() * 0.65)
         print(ally.get_character_life_points())
-        
         
     def sp_def(self):
         self.defense = 40

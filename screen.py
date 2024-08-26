@@ -464,15 +464,32 @@ def sp_animation(character: Character, enemy: Character, screen: pygame.surface.
             update_screen()
             
 def show_character_info(character: Character, screen: pygame.surface.Surface):
-    font = pygame.font.Font('assets/Andy.ttf', 20)
+    font = pygame.font.Font('assets/Andy.ttf', 25)
     
-    atk = font.render("Attack:", True, pygame.Color("yellow"))
-    lp = font.render("Life Points:", True, pygame.Color("yellow"))
-    df = font.render("Defense: ", True, pygame.Color("yellow"))
-    spd = font.render("Speed: ", True, pygame.Color("yellow"))
+    atk = font.render(f"Attack: {character.get_character_attack()}", True, pygame.Color("yellow"))
+    lp = font.render(f"Life Points: {character.get_character_life_points()}", True, pygame.Color("yellow"))
+    df = font.render(f"Defense: {character.get_character_defense()}", True, pygame.Color("yellow"))
+    spd = font.render(f"Speed: {character.get_character_speed()}", True, pygame.Color("yellow"))
     
+    desc = font.render(character.get_character_desc(), True, pygame.Color("yellow"))
+    sp_desc = font.render(character.get_character_sp_desc(), True, pygame.Color("yellow"))
     screen.blit(BACKGROUND, START)
     character.draw_character_position(screen, [150*3, 420])
+    
+    pygame.draw.rect(screen, (255, 100, 200), pygame.Rect(80, 155, 600, 80))
+    pygame.draw.rect(screen, (255, 100, 200), pygame.Rect(580, 300, 300, 180))
+    
+    # lado direito
+    screen.blit(lp, [150*4, 200+120])
+    screen.blit(atk, [150*4, 240+120])
+    screen.blit(spd, [150*4, 280+120])
+    screen.blit(df, [150*4, 320+120])
+    
+    # lado esquerdo
+    screen.blit(desc, [100*1, 160])
+    screen.blit(sp_desc, [100*1, 200])
+    
+    
     update_screen()
     
     run = True
