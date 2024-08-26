@@ -139,13 +139,19 @@ def choose_ally(screen: pygame.surface, character_list: list, enemy_list: list) 
                             
                 elif event.key == pygame.K_z:
                     if x == 120:
-                        return character_list[0]
+                        for i in range(0, 3):
+                            if character_list[i].is_character_alive():
+                                return character_list[i]
                     
                     elif x == 300:
-                        return character_list[1]
+                        for i in range(1, 3):
+                            if character_list[i].is_character_alive():
+                                return character_list[i]
                         
                     elif x == 450:
-                        return character_list[2]
+                        for i in range(2, 3):
+                            if character_list[i].is_character_alive():
+                                return character_list[i]
                         
         update_screen()
 

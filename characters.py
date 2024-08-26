@@ -17,16 +17,24 @@ class Character(pygame.sprite.Sprite):
         rect: retangulo de atuacao do personagem
         img: sprite do personagem
         pos: posicao na tela (x, y)
+        desc: descricao do personagem
+        special_desc = descricao do especial
     """
 
     def __init__(self, life_poins: float, defense: int, speed: int, attack: int, name: str):
         super().__init__()
+        # descricoes
+        self.desc = ""
+        self.special_desc = ""
+        
+        # status
         self.life_points = life_poins
         self.max_life_points = life_poins
         self.defense = defense
         self.speed = speed
         self.attack = attack
         self.name = name
+        
         
         self.pos = [0, 0]
         self.img = pygame.image.load(os.path.join('imgs', f'{name}.png'))
@@ -102,7 +110,7 @@ class Character(pygame.sprite.Sprite):
             
     # logical
     def is_character_alive(self) -> bool:
-        if self.life_points >= 0:
+        if self.life_points > 0:
             return True
         
         return False
@@ -110,19 +118,25 @@ class Character(pygame.sprite.Sprite):
 class Meele(Character):
     def __init__(self):
         super().__init__(100, 40, 30, 40, 'meele')
+        self.desc = "Uma aventureira que adora combate"
+        self.special_desc = "Dano explosivo unitário automultilador"
         
     # Da um dado critico no inimio. Caso mate, o usuario tambem morre
     def sp_atk(self, enemy: Character, screen, enemy_list, ally_list):
         enemy.receive_dmg(4 * self.get_character_attack())
+        self.receive_dmg(self.attack * 0.2)
         if enemy.life_points < 0:
             self.life_points = 0
+            
             
     def sp_def(self):
         self.defense = 50
 
 class Mage(Character):
     def __init__(self):
-        super().__init__(100, 30, 50, 50, 'mage') 
+        super().__init__(100, 30, 50, 50, 'mage')
+        self.desc = "Um velho sábio do bosque"
+        self.special_desc = "Dano em área"
         
     # causa dano em área
     def sp_atk(self, enemy_list: list[Character]):
@@ -136,8 +150,11 @@ class Mage(Character):
 class Ranged(Character):
     def __init__(self):
         super().__init__(100, 10, 100, 100, 'ranged')
+        self.desc = "Um metido arqueiro e escritor"
+        self.special_desc = "Reduz a defesa ao inimigo, causando dano crítico"
         
     # causa um ataque critico e diminui a defesa do inimigo em 25%
+
     def sp_atk(self, enemy: Character):
         enemy.receive_dmg(self.get_character_attack()*2)
         enemy.defense = enemy.get_character_defense() * 0.75
@@ -148,6 +165,8 @@ class Ranged(Character):
 class Summoner(Character):
     def __init__(self):
         super().__init__(100, 5, 40, 100, 'summoner')
+        self.desc = "?"
+        self.special_desc = "Amigos morcegos atacam os inimigos"
     
     # cria morcegos que atacam os inimigos
     def sp_atk(self, enemy_list: list[Character]):
@@ -168,6 +187,8 @@ class Summoner(Character):
 class Bard(Character):
     def __init__(self):
         super().__init__(100, 30, 50, 45, 'bard')
+        self.desc = "Uma princesa que adora músicas"
+        self.special_desc = "Cura seus aliados"
         
     # cura 65% da vida do aliado escolhido
     def sp_atk(self, ally: Character):

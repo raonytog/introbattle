@@ -3,7 +3,6 @@ from characters import *
 from points import PointSys
 import time
 
-
 pygame.init()
 
 # tempo de ação do jogo
@@ -71,8 +70,13 @@ LASER = pygame.image.load('imgs/laser.png')
 MISSIL = pygame.image.load('imgs/missil.png')
 MISSIL = pygame.transform.scale_by(MISSIL, 3)
 
-
 def play_sound(path: str, vol: float):
+    """Aciona o efeito sonoro passado por parametro
+
+    Args:
+        path (str): caminho de onde esta o som
+        vol (float): volume
+    """
     sound_bg = pygame.mixer.Sound(path)
     sound_bg.set_volume(vol)
     sound_bg.play()
@@ -133,7 +137,7 @@ def draw_character_selection(screen: pygame.surface, character_list: list) -> li
     text_1 = font.render("PRESS <, > or Z TO SELECT", True, pygame.Color("yellow"))
     text_rect_1 = text_1.get_rect(center=(WIDTH/2, 200))
     
-    text_2 = font.render("and ENTER to start", True, pygame.Color("yellow"))
+    text_2 = font.render("ENTER to start, I to show hero info", True, pygame.Color("yellow"))
     text_rect_2 = text_2.get_rect(center=(WIDTH/2, 240))
     
     selected_characters = list()
@@ -160,7 +164,7 @@ def draw_character_selection(screen: pygame.surface, character_list: list) -> li
             if event.type == pygame.QUIT:
                 pygame.quit()
                 
-            # movimento da seta
+            # movimento da seta para selecao de personagem
             elif event.type == pygame.KEYDOWN:
                 
                 if event.key == pygame.K_RIGHT and x+150 <= 800:
@@ -172,6 +176,7 @@ def draw_character_selection(screen: pygame.surface, character_list: list) -> li
                 elif event.key == pygame.K_RETURN and len(selected_characters) >= 1:
                     return selected_characters
 
+                # verifica se clicou Z para selecionar o personagem e a lista nao esta cheia
                 elif event.key == pygame.K_z and len(selected_characters) <= 3:
                     play_sound('assets/select.mp3', 0.1)
                     if x == 117:
@@ -223,6 +228,13 @@ def draw_character_selection(screen: pygame.surface, character_list: list) -> li
                             if len(selected_characters) < 3:
                                 selected_characters.append(character_list[4])
                                 banner_positions.append([750, 400])
+                                
+                elif event.key == pygame.K_i:
+                    if (x == 117 + 0*150): show_character_info(character_list[0], screen)
+                    elif (x == 117 + 1*150): show_character_info(character_list[1], screen)
+                    elif (x == 117 + 2*150): show_character_info(character_list[2], screen)
+                    elif (x == 117 + 3*150): show_character_info(character_list[3], screen)
+                    else: show_character_info(character_list[4], screen)
 
         update_screen()
         
@@ -450,3 +462,26 @@ def sp_animation(character: Character, enemy: Character, screen: pygame.surface.
                 
             screen.blit(HEAL, [x, y])
             update_screen()
+            
+def show_character_info(character: Character, screen: pygame.surface.Surface):
+    font = pygame.font.Font('assets/Andy.ttf', 20)
+    
+    atk = font.render("Attack:", True, pygame.Color("yellow"))
+    lp = font.render("Life Points:", True, pygame.Color("yellow"))
+    df = font.render("Defense: ", True, pygame.Color("yellow"))
+    spd = font.render("Speed: ", True, pygame.Color("yellow"))
+    
+    screen.blit(BACKGROUND, START)
+    character.draw_character_position(screen, [150*3, 420])
+    update_screen()
+    
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = True
+                pygame.quit()
+                
+            elif event.type == pygame.KEYDOWN:
+                play_sound('assets/select.mp3', 0.1)
+                run = False
