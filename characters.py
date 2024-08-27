@@ -36,6 +36,7 @@ class Character(pygame.sprite.Sprite):
         self.attack = attack
         self.name = name
         
+        # imagem
         self.pos = [0, 0]
         self.img = pygame.image.load(os.path.join('imgs', f'{name}.png'))
         
@@ -53,66 +54,162 @@ class Character(pygame.sprite.Sprite):
 
     # funcoes de desenhar
     def draw_character(self, screen: pygame.surface):
+        """Desenha o personagem na tela
+
+        Args:
+            screen (pygame.surface): tela
+        """
         screen.blit(self.img, self.rect)
         
     def draw_character_position(self, screen: pygame.surface, position: list):
+        """Desenha o personagem em posicao especifica na tela
+
+        Args:
+            screen (pygame.surface): tela
+            position (list): posicao (x, y)
+        """
         screen.blit(self.img, position)
 
 
     # funcoes de get
     def get_character_life_points(self) -> float:
+        """Retorna a qauntidade de vida atual do personagem
+
+        Returns:
+            float: vida atual
+        """
         return self.life_points
     
     def get_character_max_life_points(self) -> float:
+        """Retorna a quantidade máxima de vida do personagem
+
+        Returns:
+            float: vida maxima
+        """
         return self.max_life_points
     
     def get_character_defense(self) -> int:
+        """Retorna a defesa do personagem
+
+        Returns:
+            int: defesa
+        """
         return self.defense
     
     def get_character_speed(self) -> int:
+        """Retorna a velocidade do personagem
+
+        Returns:
+            int: velocidade
+        """
         return self.speed
     
     def get_character_attack(self) -> int:
+        """Retorna o ataque do personagem
+
+        Returns:
+            int: ataque
+        """
         return self.attack
     
     def get_character_name(self) -> str:
+        """Retorna o nome do personagem
+
+        Returns:
+            str: nome
+        """
         return self.name
     
     def get_caracter_rect(self) -> pygame.rect:
+        """Retorna o retangulo de acao do personagem
+
+        Returns:
+            pygame.rect: retangulo
+        """
         return self.rect
     
     def get_caracter_pos(self) -> int:
+        """Retorna a posicao do personagem
+
+        Returns:
+            int: (x, y)
+        """
         return self.pos
         
     def get_caracter_pos_x(self) -> int:
+        """Retorna a posicao X do personagem
+
+        Returns:
+            int: x
+        """
         return self.pos[0]
         
     def get_caracter_pos_y(self) -> int:
+        """Retorna a posicao Y do personagem
+
+        Returns:
+            int: y
+        """
         return self.pos[1]
     
     def get_character_desc(self) -> str:
+        """Retorna a descricao do personagem
+
+        Returns:
+            str: descricao
+        """
         return self.desc
         
     def get_character_sp_desc(self) -> str:
+        """Retorna a descricao do especial do personagem
+
+        Returns:
+            str: descricao do especial
+        """
         return self.special_desc
     
     def get_character_hiden(self) -> str:
+        """Retorna a descricao secreta do personagem
+
+        Returns:
+            str: descricao secreta
+        """
         return self.hidden
         
     
     # setters
     def set_character_post(self, position: list[2]) -> None:
+        """Seta uma posicao para o personagem
+
+        Args:
+            position (list[2]): (x, y)
+        """
         self.pos = position
         
     def set_character_atk(self, new_atk: int) -> None:
+        """Seta um novo ataque ao personagem
+
+        Args:
+            new_atk (int): ataque novo
+        """
         self.attack = new_atk
         
     def give_character_life_points(self, bonus_life: int) -> None:
+        """Adiciona vida ao personagem
+
+        Args:
+            bonus_life (int): vida recebida
+        """
         self.life_points += bonus_life
         if self.life_points > self.max_life_points:
             self.life_points = self.max_life_points
         
     def receive_dmg(self, damage: int) -> None:
+        """Recebe dano 
+
+        Args:
+            damage (int): dano
+        """
         # verifica se eh possivel receber dano
         if self.life_points > 0:
             self.life_points -= damage * (50/(50 + self.defense))
@@ -123,6 +220,11 @@ class Character(pygame.sprite.Sprite):
             
     # logical
     def is_character_alive(self) -> bool:
+        """Verifica se o personagem esta vivo
+
+        Returns:
+            bool: True or False
+        """
         if self.life_points > 0:
             return True
         
@@ -141,7 +243,6 @@ class Meele(Character):
         self.receive_dmg(self.attack * 0.2)
         if enemy.life_points < 0:
             self.life_points = 0
-            
             
     def sp_def(self):
         self.defense = 50
@@ -170,7 +271,6 @@ class Ranged(Character):
         self.hidden = "cupons, descontos e viagens sao comigo mesmo!"
         
     # causa um ataque critico e diminui a defesa do inimigo em 25%
-
     def sp_atk(self, enemy: Character):
         enemy.receive_dmg(self.get_character_attack()*2)
         enemy.defense = enemy.get_character_defense() * 0.75
