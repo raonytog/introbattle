@@ -67,8 +67,11 @@ BAT = pygame.image.load('imgs/bat.png')
 
 LASER = pygame.image.load('imgs/laser.png')
 
-MISSIL = pygame.image.load('imgs/missil.png')
+MISSIL = pygame.image.load('imgs/plane.png')
 MISSIL = pygame.transform.scale_by(MISSIL, 3)
+
+MINECRAFT = pygame.image.load('imgs/minecraft.png')
+MINECRAFT = pygame.transform.scale_by(MINECRAFT, 1)
 
 def play_sound(path: str, vol: float):
     """Aciona o efeito sonoro passado por parametro
@@ -161,20 +164,13 @@ def draw_character_selection(screen: pygame.surface, character_list: list) -> li
         screen.blit(SETA, [x, y])
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+            if event.type == pygame.QUIT: pygame.quit()
                 
             # movimento da seta para selecao de personagem
             elif event.type == pygame.KEYDOWN:
-                
-                if event.key == pygame.K_RIGHT and x+150 <= 800:
-                    x += 150
-                    
-                elif event.key == pygame.K_LEFT and x-150 >= 70: 
-                    x -= 150
-
-                elif event.key == pygame.K_RETURN and len(selected_characters) >= 1:
-                    return selected_characters
+                if event.key == pygame.K_RIGHT and x+150 <= 800: x += 150
+                elif event.key == pygame.K_LEFT and x-150 >= 70: x -= 150
+                elif event.key == pygame.K_RETURN and len(selected_characters) >= 1: return selected_characters
 
                 # verifica se clicou Z para selecionar o personagem e a lista nao esta cheia
                 elif event.key == pygame.K_z and len(selected_characters) <= 3:
@@ -309,9 +305,9 @@ def draw_win_screen(screen: pygame.surface) -> None:
     
     while True:
         for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    break
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                break
 
 def draw_lost_screen(screen: pygame.surface) -> None:
     """Desenha a tela de derrota 
@@ -329,9 +325,9 @@ def draw_lost_screen(screen: pygame.surface) -> None:
     update_screen()
     while True:
         for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    break
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                break
 
 def draw_menu_options(screen: pygame.surface, character: Character, character_list: list[Character], enemy_list: list[Character], pontos: PointSys) -> None:
     """Desenha o menu com as opções de seleção (ataque, defesa, especial)
@@ -419,11 +415,8 @@ def sp_animation(character: Character, enemy: Character, screen: pygame.surface.
         x2, y2 = enemy_list[1].get_caracter_pos()
         draw_screen(screen, ally_list, enemy_list)
         
-        if enemy_list[0].is_character_alive():
-            screen.blit(LASER, [x1-100, 0])
-                
-        if enemy_list[1].is_character_alive():
-            screen.blit(LASER, [x2-100, 0])
+        if enemy_list[0].is_character_alive(): screen.blit(LASER, [x1-100, 0])
+        if enemy_list[1].is_character_alive(): screen.blit(LASER, [x2-100, 0])
                 
         update_screen()
         time.sleep(0.5)
@@ -446,11 +439,8 @@ def sp_animation(character: Character, enemy: Character, screen: pygame.surface.
             draw_screen(screen, ally_list, enemy_list)
             y -= 28
                 
-            if enemy_list[0].is_character_alive():
-                screen.blit(BAT, [x1, y])
-                
-            if enemy_list[1].is_character_alive():
-                screen.blit(BAT, [x2, y])
+            if enemy_list[0].is_character_alive(): screen.blit(BAT, [x1, y])
+            if enemy_list[1].is_character_alive(): screen.blit(BAT, [x2, y])
                 
             update_screen()
         
@@ -463,21 +453,64 @@ def sp_animation(character: Character, enemy: Character, screen: pygame.surface.
             screen.blit(HEAL, [x, y])
             update_screen()
             
+def show_character_status(character: Character, screen: pygame.surface.Surface):
+    font = pygame.font.Font('assets/Andy.ttf', 20)
+    atk = font.render(f"ATTACK: {character.get_character_attack()}", True, pygame.Color("white"))
+    lp = font.render(f"LIFE POINTS: {character.get_character_life_points()}", True, pygame.Color("white"))
+    df = font.render(f"DEFENSE: {character.get_character_defense()}", True, pygame.Color("white"))
+    spd = font.render(f"SPEED: {character.get_character_speed()}", True, pygame.Color("white"))
+    
+    screen.blit(atk, [20, 20])
+    screen.blit(lp, [20, 40])
+    screen.blit(df, [20, 60])
+    screen.blit(spd, [20, 80])
+    update_screen()
+    
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = True
+                pygame.quit()
+                
+            elif event.type == pygame.KEYDOWN:
+                play_sound('assets/select.mp3', 0.1)
+                run = False
+    
+
+
+def minecraft(screen: pygame.surface.Surface, ally_list: list[Character], enemy_list: list[Character]):
+    x, y = WIDTH/2-150, 0
+    
+    while y <= HEIGHT:
+        draw_screen(screen, ally_list, enemy_list)
+        screen.blit(MINECRAFT, [x, y])
+        y += 10
+        update_screen()
+        
+    for aliado in ally_list:
+        aliado.set_character_atk(aliado.get_character_attack()*1.5)
+        
+            
 def show_character_info(character: Character, screen: pygame.surface.Surface):
     font = pygame.font.Font('assets/Andy.ttf', 25)
+    font_hidden = pygame.font.Font('assets/Andy.ttf', 15)
     
-    atk = font.render(f"Attack: {character.get_character_attack()}", True, pygame.Color("yellow"))
-    lp = font.render(f"Life Points: {character.get_character_life_points()}", True, pygame.Color("yellow"))
-    df = font.render(f"Defense: {character.get_character_defense()}", True, pygame.Color("yellow"))
-    spd = font.render(f"Speed: {character.get_character_speed()}", True, pygame.Color("yellow"))
+    atk = font.render(f"ATTACK: {character.get_character_attack()}", True, pygame.Color("white"))
+    lp = font.render(f"LIFE POINTS: {character.get_character_life_points()}", True, pygame.Color("white"))
+    df = font.render(f"DEFENSE: {character.get_character_defense()}", True, pygame.Color("white"))
+    spd = font.render(f"SPEED: {character.get_character_speed()}", True, pygame.Color("white"))
     
-    desc = font.render(character.get_character_desc(), True, pygame.Color("yellow"))
-    sp_desc = font.render(character.get_character_sp_desc(), True, pygame.Color("yellow"))
+    desc = font.render(character.get_character_desc(), True, pygame.Color("white"))
+    sp_desc = font.render(character.get_character_sp_desc(), True, pygame.Color("white"))
+    hidden = font_hidden.render(character.get_character_hiden(), True, pygame.Color("black"))
+    
     screen.blit(BACKGROUND, START)
     character.draw_character_position(screen, [150*3, 420])
     
-    pygame.draw.rect(screen, (255, 100, 200), pygame.Rect(80, 155, 600, 80))
-    pygame.draw.rect(screen, (255, 100, 200), pygame.Rect(580, 300, 300, 180))
+    pygame.draw.rect(screen, (192, 224, 110), pygame.Rect(80, 50, 600, 80)) # desc
+    pygame.draw.rect(screen, (192, 224, 110), pygame.Rect(580, 300, 300, 180)) # stats
+    screen.blit(hidden, [10, 520])# hiden
     
     # lado direito
     screen.blit(lp, [150*4, 200+120])
@@ -486,9 +519,8 @@ def show_character_info(character: Character, screen: pygame.surface.Surface):
     screen.blit(df, [150*4, 320+120])
     
     # lado esquerdo
-    screen.blit(desc, [100*1, 160])
-    screen.blit(sp_desc, [100*1, 200])
-    
+    screen.blit(desc, [100*1, 60])
+    screen.blit(sp_desc, [100*1, 100])
     
     update_screen()
     

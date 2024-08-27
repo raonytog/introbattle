@@ -70,6 +70,7 @@ def enemy_moviment(character: Character, character_list: list[Character], enemy_
 def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_list: list[Character], pontos: PointSys) -> None:
     run = True
     x, y = 80, HEIGHT-160
+    used = 0
 
     while run:
         for character in character_list:
@@ -79,29 +80,21 @@ def combat_loop(screen: pygame.surface, character_list: list[Character], enemy_l
                 
                 pressed_z = False
                 while not pressed_z:
+                    draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
                     update_screen()
                     for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                                pygame.quit()
+                        if event.type == pygame.QUIT: pygame.quit()
                                 
                         # movimento da seta
                         elif event.type == pygame.KEYDOWN:
-                            
-                            if event.key == pygame.K_RIGHT and x == 80 and y != 628:
-                                x += 200
-                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
-                                
-                            elif event.key == pygame.K_LEFT and x == 280:
-                                x -= 200
-                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
-                                
-                            elif event.key == pygame.K_UP and y == 568+60:
-                                y -= 60
-                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
-                                
-                            elif event.key == pygame.K_DOWN and y == 568 and x != 280: 
-                                y += 60
-                                draw_menu_interactions(screen, character, character_list, enemy_list, [x, y], pontos)
+                            if event.key == pygame.K_RIGHT and x == 80 and y != 628: x += 200
+                            elif event.key == pygame.K_LEFT and x == 280: x -= 200
+                            elif event.key == pygame.K_UP and y == 568+60: y -= 60
+                            elif event.key == pygame.K_DOWN and y == 568 and x != 280: y += 60
+                            elif event.key == pygame.K_i: show_character_status(character, screen)
+                            elif event.key == pygame.K_m and not used:
+                                minecraft(screen, character_list, enemy_list)
+                                used = 1
                                     
                             elif event.key == pygame.K_z:
                                 character_movement(character, enemy_list, character_list, [x, y], screen, pontos)
@@ -127,35 +120,36 @@ def choose_ally(screen: pygame.surface, character_list: list, enemy_list: list) 
         for event in pygame.event.get():
             play_sound('assets/select.mp3', 0.1)
             
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                
+            if event.type == pygame.QUIT: pygame.quit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT and x < 450:
-                    x += 150
-                        
-                elif event.key == pygame.K_LEFT and x > 150:
-                    x -= 150
-                            
+                if event.key == pygame.K_RIGHT and x < 450: x += 150
+                elif event.key == pygame.K_LEFT and x > 150:x -= 150
                 elif event.key == pygame.K_z:
                     if x == 120:
                         for i in range(0, 3):
-                            if character_list[i].is_character_alive():
-                                return character_list[i]
+                            if character_list[i].is_character_alive(): return character_list[i]
                     
                     elif x == 300:
                         for i in range(1, 3):
-                            if character_list[i].is_character_alive():
-                                return character_list[i]
+                            if character_list[i].is_character_alive(): return character_list[i]
                         
                     elif x == 450:
                         for i in range(2, 3):
-                            if character_list[i].is_character_alive():
-                                return character_list[i]
+                            if character_list[i].is_character_alive(): return character_list[i]
                         
         update_screen()
 
 def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[DukeFisheron, EyeOfCtchulu])-> Character:
+    """Escolhe um inimigo para ser atacado
+
+    Args:
+        screen (pygame.surface): tela
+        character (Character): personagem que irá atacar
+        enemy_list (list[DukeFisheron, EyeOfCtchulu]): inimigos possiveis de atacar
+
+    Returns:
+        Character: inimigo a ser atacado
+    """
     x1, y1 = WIDTH-250, 230
     x2, y2 = x1-250, y1-230
     
@@ -171,10 +165,8 @@ def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[
     run = True
     while run:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.QUIT: pygame.quit()
+            elif event.type == pygame.KEYDOWN: 
                 play_sound('assets/select.mp3', 0.1)
                 
                 if event.key == pygame.K_RIGHT and enemy_list[0].get_character_life_points() > 0:
@@ -191,8 +183,7 @@ def choose_enemy(screen: pygame.surface, character: Character, enemy_list: list[
                         screen.blit(enemy_list[0].img, [x1, y1]) # o outro
                     update_screen()
                     
-                elif event.key == pygame.K_z:
-                    return enemy_list[selected]
+                elif event.key == pygame.K_z: return enemy_list[selected]
 
         update_screen()
 
@@ -206,8 +197,7 @@ def is_player_defeated(character_list: list[Character]) -> bool:
         bool: Se o jogador for derrotado, True. Caso contrário, False
     """
     for char in character_list:
-        if char.get_character_life_points() > 0:
-            return False
+        if char.get_character_life_points() > 0: return False
         
     return True
 
@@ -221,7 +211,6 @@ def is_player_winner(enemy_list: list[Character]) -> bool:
         bool: Se há inimigos vivos, False. Caso contrário, True
     """
     for enemy in enemy_list:
-        if enemy.get_character_life_points() > 0:
-            return False
+        if enemy.get_character_life_points() > 0: return False
         
     return True

@@ -26,6 +26,7 @@ class Character(pygame.sprite.Sprite):
         # descricoes
         self.desc = ""
         self.special_desc = ""
+        self.hidden = ""
         
         # status
         self.life_points = life_poins
@@ -34,7 +35,6 @@ class Character(pygame.sprite.Sprite):
         self.speed = speed
         self.attack = attack
         self.name = name
-        
         
         self.pos = [0, 0]
         self.img = pygame.image.load(os.path.join('imgs', f'{name}.png'))
@@ -95,11 +95,17 @@ class Character(pygame.sprite.Sprite):
         
     def get_character_sp_desc(self) -> str:
         return self.special_desc
+    
+    def get_character_hiden(self) -> str:
+        return self.hidden
         
     
     # setters
     def set_character_post(self, position: list[2]) -> None:
         self.pos = position
+        
+    def set_character_atk(self, new_atk: int) -> None:
+        self.attack = new_atk
         
     def give_character_life_points(self, bonus_life: int) -> None:
         self.life_points += bonus_life
@@ -127,6 +133,7 @@ class Meele(Character):
         super().__init__(100, 40, 30, 40, 'meele')
         self.desc = "Uma aventureira que adora combate"
         self.special_desc = "Dano explosivo unitário automultilador"
+        self.hidden = "maior fa da taylor (e da sza)"
         
     # Da um dado critico no inimio. Caso mate, o usuario tambem morre
     def sp_atk(self, enemy: Character, screen, enemy_list, ally_list):
@@ -144,6 +151,7 @@ class Mage(Character):
         super().__init__(100, 30, 30, 60, 'mage')
         self.desc = "Um velho sabio do bosque"
         self.special_desc = "Dano em area"
+        self.hidden = "adoro ser uma bailarina no sol"
         
     # causa dano em área
     def sp_atk(self, enemy_list: list[Character]):
@@ -159,6 +167,7 @@ class Ranged(Character):
         super().__init__(100, 20, 100, 40, 'ranged')
         self.desc = "Um metido arqueiro e escritor"
         self.special_desc = "Reduz a defesa ao inimigo, causando dano critico"
+        self.hidden = "cupons, descontos e viagens sao comigo mesmo!"
         
     # causa um ataque critico e diminui a defesa do inimigo em 25%
 
@@ -174,6 +183,7 @@ class Summoner(Character):
         super().__init__(100, 1, 40, 100, 'summoner')
         self.desc = "?"
         self.special_desc = "Amigos morcegos atacam os inimigos"
+        self.hidden = "cachuhell"
     
     # cria morcegos que atacam os inimigos
     def sp_atk(self, enemy_list: list[Character]):
@@ -196,6 +206,7 @@ class Bard(Character):
         super().__init__(100, 30, 50, 45, 'bard')
         self.desc = "Uma princesa que adora musicas"
         self.special_desc = "Cura seus aliados"
+        self.hidden = "gossip's queen"
         
     # cura 65% da vida do aliado escolhido
     def sp_atk(self, ally: Character):

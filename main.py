@@ -31,10 +31,12 @@ def game_result(ally_list: list[Character], enemy_list: list[Character], screen:
     """
     # player perdeu
     if is_player_defeated(ally_list):
+        time.sleep(0.2)
         draw_lost_screen(screen)
     
     # player ganhou
     elif is_player_winner(enemy_list):
+        time.sleep(0.2)
         draw_win_screen(SCREEN)
 
 def main():
